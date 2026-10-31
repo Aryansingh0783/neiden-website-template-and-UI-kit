@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-10T14:21:01.153Z",
+  "checks": [
+    "compound area/status filters",
+    "mixed-unit price sorting",
+    "empty state and clear",
+    "selected property enquiry context",
+    "local seller draft with no recipient",
+    "2 nali to 480 gaj / 4320 sq ft",
+    "menu scroll lock and Escape",
+    "query persistence on reload",
+    "anchor focus and exact Back restoration",
+    "3s wide / 4s regular preset",
+    "reduced-motion native scroll and hidden blur",
+    "footer hides blur",
+    "motion demo transition",
+    "zero cross-origin resources on inspected listing route",
+    "zero console errors on inspected listing route",
+    "320px / 390px / 960px / 1440px / 1680px viewport checks",
+    "mount / destroy / remount yields one blur owner and one header"
+  ],
+  "passed": true
+}

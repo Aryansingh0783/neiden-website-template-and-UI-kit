@@ -1,0 +1,114 @@
+[
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/",
+    "title": "acre. — Land, cottages & a different pace"
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/properties/",
+    "title": "Properties — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/areas/",
+    "title": "The areas — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/cottages/",
+    "title": "Cottages — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/services/",
+    "title": "Services — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/about/",
+    "title": "Our approach — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/guide/",
+    "title": "Buyer guide — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/contact/",
+    "title": "Contact — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/land-valuation/",
+    "title": "Seller enquiry — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/privacy/",
+    "title": "Preview privacy — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/properties/open-ridge/",
+    "title": "The open ridge — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/properties/pine-edge/",
+    "title": "At the forest edge — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/properties/valley-ground/",
+    "title": "A little valley ground — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/properties/garden-plot/",
+    "title": "The garden plot — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/properties/woodland-cottage/",
+    "title": "The woodland cottage — acre."
+  },
+  {
+    "brokenImages": 0,
+    "h1": 1,
+    "overflow": false,
+    "route": "/properties/ridge-retreat/",
+    "title": "The ridge retreat — acre."
+  }
+]

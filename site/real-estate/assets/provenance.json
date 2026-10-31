@@ -1,0 +1,29 @@
+[
+  {
+    "file": "landscape.jpg",
+    "sourcePage": "https://unsplash.com/photos/RqZtsaVbexE",
+    "author": "Hannah-Sophie Lerch",
+    "imageURL": "https://images.unsplash.com/photo-1679780459330-17c5663b008e?auto=format&fit=crop&w=1800&q=85&fm=jpg",
+    "sha256": "9b77bed41b09a7d047651129d25cf6bdb9d3a7b4b67fa1fc29a4e076231ad0c2",
+    "use": "Illustrative demo only; not a Devbhoomi listing or location photograph",
+    "license": "Unsplash License"
+  },
+  {
+    "file": "woodland.jpg",
+    "sourcePage": "https://unsplash.com/photos/Zmvccq9Cxmw",
+    "author": "Kirill Prikhodko",
+    "imageURL": "https://images.unsplash.com/photo-1719784909331-665d4a34fd1a?auto=format&fit=crop&w=1800&q=85&fm=jpg",
+    "sha256": "7a54680bcd9b4a74bbadc5613faf08efcd8320299a1745d58814e3a7abb81ce4",
+    "use": "Illustrative demo only; not a Devbhoomi listing or location photograph",
+    "license": "Unsplash License"
+  },
+  {
+    "file": "cottage.jpg",
+    "sourcePage": "https://unsplash.com/photos/lntUjsB_bUk",
+    "author": "Diego Romeo",
+    "imageURL": "https://images.unsplash.com/photo-1763306625584-30ccb519601a?auto=format&fit=crop&w=1800&q=85&fm=jpg",
+    "sha256": "34fdc3ca5b362bcba5f73239f97748aa4e7b12e75c579e9c5be72dea2044bd0d",
+    "use": "Illustrative demo only; not a Devbhoomi listing or location photograph",
+    "license": "Unsplash License"
+  }
+]

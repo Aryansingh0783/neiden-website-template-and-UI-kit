@@ -1,0 +1,16 @@
+{
+  "reference": "https://neiden.framer.media/",
+  "captured": "2026-10-10",
+  "modules": [
+    {
+      "name": "2uQbRrDtoxfE3UZHZ-2wgMSI-vEbDwSP3FN7xx0FUAc.DVuEzT9_.mjs",
+      "bytes": 1117254,
+      "sha256": "e05df5b8ec3f372353ea28631f53bb39d3fe29ac856e71a680d933ad8533d6ca"
+    },
+    {
+      "name": "script_main.CY4E0CFi.mjs",
+      "bytes": 350335,
+      "sha256": "8cc0c972fd16d15898105655abe765d7e3d81574737761afa99c7174dfdc24b2"
+    }
+  ]
+}

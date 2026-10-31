@@ -1,0 +1,73 @@
+{
+  "verifiedAt": "2026-10-10T14:19:52.579Z",
+  "modules": 9,
+  "files": 25,
+  "routes": [
+    {
+      "route": "/",
+      "ok": true
+    },
+    {
+      "route": "/properties/",
+      "ok": true
+    },
+    {
+      "route": "/areas/",
+      "ok": true
+    },
+    {
+      "route": "/cottages/",
+      "ok": true
+    },
+    {
+      "route": "/services/",
+      "ok": true
+    },
+    {
+      "route": "/about/",
+      "ok": true
+    },
+    {
+      "route": "/guide/",
+      "ok": true
+    },
+    {
+      "route": "/contact/",
+      "ok": true
+    },
+    {
+      "route": "/land-valuation/",
+      "ok": true
+    },
+    {
+      "route": "/privacy/",
+      "ok": true
+    },
+    {
+      "route": "/properties/open-ridge/",
+      "ok": true
+    },
+    {
+      "route": "/properties/pine-edge/",
+      "ok": true
+    },
+    {
+      "route": "/properties/valley-ground/",
+      "ok": true
+    },
+    {
+      "route": "/properties/garden-plot/",
+      "ok": true
+    },
+    {
+      "route": "/properties/woodland-cottage/",
+      "ok": true
+    },
+    {
+      "route": "/properties/ridge-retreat/",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

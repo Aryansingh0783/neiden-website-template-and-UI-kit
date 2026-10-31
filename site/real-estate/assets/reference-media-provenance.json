@@ -1,0 +1,22 @@
+{
+  "display.woff2": {
+    "source": "https://fonts.gstatic.com/s/calsans/v2/fdN99sWUv3gWqXxqqRBctFs.woff2",
+    "sha256": "f42a64c6f1183b77af393b3db49ca5c8c2da0481bb8aeca7ee5e65834e5fc639",
+    "bytes": 21464
+  },
+  "body.woff2": {
+    "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAopxhS2f3ZGMZpg.woff2",
+    "sha256": "0f4d7fb2e3f775b0655a621e03b467e46e4011676e09b2c56447a72426a4c8fc",
+    "bytes": 21828
+  },
+  "hand.woff2": {
+    "source": "https://framerusercontent.com/assets/wANxq4ncIu35guzFWKF73Wj29k.woff2",
+    "sha256": "3c5757d79bb5826bf5bc2bd645921feb03c4685c050f02388aecc70ebab90bdf",
+    "bytes": 25964
+  },
+  "wave.mp4": {
+    "source": "https://framerusercontent.com/assets/ugAzn7fEqsPmmKRMmi19TDmUs.mp4",
+    "sha256": "0ac8df976825bd80e8d5abe8902360c70b202f245f5096cf668ba5810659f12f",
+    "bytes": 14409520
+  }
+}

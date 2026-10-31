@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.mjs",
     "verify": "node tools/verify.mjs",
-    "test": "node --test tools/model.test.mjs tools/render.test.mjs tools/listings.test.mjs tools/seo.test.mjs tools/pages.test.mjs tools/forms.test.mjs",
+    "test": "node --test tools/model.test.mjs tools/render.test.mjs tools/listings.test.mjs tools/seo.test.mjs tools/pages.test.mjs tools/forms.test.mjs tools/assistant.test.mjs",
     "import": "node tools/import-devbhoomi.mjs",
     "build": "node tools/build.mjs"
   },

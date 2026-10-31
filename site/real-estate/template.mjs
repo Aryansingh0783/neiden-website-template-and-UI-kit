@@ -5,6 +5,8 @@ import { mountMotion } from '../effects/motion-kit.mjs';
 import { reducedMotion } from '../effects/motion-config.mjs';
 
 /** Mount once into an empty root. Host applications may provide onNavigate and onEnquiry. */
+/** randomUUID needs a secure context (https or localhost); fall back so plain-http staging does not crash on mount. */
+const uid=()=>globalThis.crypto?.randomUUID?.()||`${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 export function mountRealEstate({root,content=defaultContent,properties=defaultProperties,basePath='/',onNavigate,onEnquiry,motion=true}={}) {
  if(!root)throw new Error('A root element is required.');
  if(root.dataset.estateMounted)throw new Error('Template is already mounted. Call destroy() before remounting.');
@@ -18,7 +20,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  const page=root.querySelector('main'),menu=root.querySelector('dialog'),menuButton=root.querySelector('.estate-menu-button');
  const effects=motion?mountMotion({anchorNavigation:false,revealSelector:'.estate-app [data-motion-reveal]',footerSelector:'.estate-app footer',...(typeof motion==='object'?motion:{})}):null;
  const signal=new AbortController();const listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal:signal.signal});
- const positions=new Map();let key=history.state?.estateKey||crypto.randomUUID(),busy=false,queued=null,oldOverflow='',destroyed=false,activeURL=new URL(location.href);
+ const positions=new Map();let key=history.state?.estateKey||uid(),busy=false,queued=null,oldOverflow='',destroyed=false,activeURL=new URL(location.href);
  const previousRestoration=history.scrollRestoration;
  if(!onNavigate){history.scrollRestoration='manual';history.replaceState({...history.state,estateKey:key},'');}
  const localPath=url=>normalPath(url.pathname.slice(basePath.replace(/\/$/,'').length));
@@ -40,8 +42,8 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
    let restore=0;
    const update=()=>{
      if(destroyed)return;
-     if(pop){key=history.state?.estateKey||crypto.randomUUID();restore=positions.get(key)||0;}
-     else{key=crypto.randomUUID();history.pushState({estateKey:key},'',url);}
+     if(pop){key=history.state?.estateKey||uid();restore=positions.get(key)||0;}
+     else{key=uid();history.pushState({estateKey:key},'',url);}
      draw(url);window.scrollTo({top:restore,behavior:'instant'});effects?.scroller?.scrollTo(restore,{immediate:true});
    };
    try{if(effects)await effects.transitionPage(update,page);else update();
@@ -75,7 +77,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
      let target;try{target=root.querySelector(`#${CSS.escape(decodeURIComponent(url.hash.slice(1)))}`);}catch{}
      if(!target)return;
      event.preventDefault();closeMenu();
-     if(!onNavigate){positions.set(key,scrollY);key=crypto.randomUUID();history.pushState({estateKey:key},'',url);activeURL=url;}
+     if(!onNavigate){positions.set(key,scrollY);key=uid();history.pushState({estateKey:key},'',url);activeURL=url;}
      if(!target.hasAttribute('tabindex')){target.setAttribute('tabindex','-1');target.addEventListener('blur',()=>target.removeAttribute('tabindex'),{once:true});}
      target.focus({preventScroll:true});
      if(effects?.scroller)effects.scroller.scrollTo(target,{offset:target===page?0:-70,immediate:reducedMotion()});else target.scrollIntoView();
@@ -96,7 +98,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
    if(onEnquiry){const button=form.querySelector('button[type=submit]');button.disabled=true;try{const result=await onEnquiry({fields,property,message});feedback.textContent=result?.message||'Your enquiry is ready.';}catch{feedback.textContent='The enquiry could not be completed. Please try again.';}finally{button.disabled=false;}return;}
    feedback.innerHTML='<h3>Your draft is ready.</h3><p>Nothing has been sent. You can select and copy this text.</p><textarea aria-label="Enquiry draft" rows="10" readonly></textarea>';
    feedback.querySelector('textarea').value=message;
-   if(content.contact.whatsappNumber){const a=document.createElement('a');a.className='estate-text-link';a.textContent='Open draft in WhatsApp ↗';a.href=whatsappURL(content.contact.whatsappNumber,message);a.target='_blank';a.rel='noopener';feedback.append(a);}
+   if(content.contact.whatsappNumber){try{const a=document.createElement('a');a.className='estate-text-link';a.textContent='Open draft in WhatsApp ↗';a.href=whatsappURL(content.contact.whatsappNumber,message);a.target='_blank';a.rel='noopener';feedback.append(a);}catch{const note=document.createElement('p');note.className='estate-small';note.textContent='The WhatsApp number is not configured correctly, so no WhatsApp link was added. Copy the draft above instead.';feedback.append(note);}}
    effects?.scroller?.resize();
  });
  if(!onNavigate)listen(window,'popstate',()=>navigate(location.href,{pop:true}));

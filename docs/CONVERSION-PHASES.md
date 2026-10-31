@@ -20,8 +20,8 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 
 | # | Phase | What the owner sees | Status |
 |---|---|---|---|
-| 1 | Foundation and Home | Devbhoomi brand, header, footer, real home page, all 20 real listings loaded | **Built, waiting for approval** |
-| 2 | Listings | Property list with filters and sorting, full detail pages with photos, videos, highlights, WhatsApp per plot | Not started |
+| 1 | Foundation and Home | Devbhoomi brand, header, footer, real home page, all 20 real listings loaded | **Approved by owner** |
+| 2 | Listings | Property list with filters and sorting, full detail pages with photos, videos, highlights, WhatsApp per plot | **Built, waiting for approval** |
 | 3 | The other pages | Areas (with their own pages), Cottages, Services, About, Guide, Testimonials (6 real), Updates, Referral, legal pages | Not started |
 | 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | Not started |
 | 5 | Design pass | `impeccable` critique and polish across every page, `unslop` over all wording, image and video optimisation, accessibility and performance audit | Not started |
@@ -39,6 +39,15 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 - Removed the three European demo photos. The old demo records are kept only as test fixtures (`tools/fixtures/`).
 - Other pages (areas, cottages, services, about, guide, contact, privacy) still use template wording until phases 3 and 4. Listing detail pages show real facts but are redesigned in phase 2.
 - Tests: `npm test` (13), `npm run verify`.
+
+## Phase 2 record
+
+- Listing videos imported (11 listings, 42 MB under `site/real-estate/assets/listings/`) with `--videos`.
+- Property detail page rebuilt: video or photo first, the host's full write-up, "What it has" list, spec table, price with the total for the parcel, WhatsApp button that opens the plot's own message, call link, form link, and "More in <area>" cards.
+- Sold plots say so, never offer to sell the plot, and send the visitor to similar land.
+- Listing page: available land first, sold dimmed, Video badge, search also matches the place name, "Ask us" road access reads "Ask about access".
+- Tests: 18 pass (`npm test`), `npm run verify` passes. All 20 detail pages loaded on desktop and mobile with no console errors, failed requests or overflow.
+- Known host-copy quirks kept as written: some sold plots' write-ups still quote a price in the prose, and "View" reads "Ask us" on a few.
 
 ## Re-importing the data
 

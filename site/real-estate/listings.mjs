@@ -61,7 +61,9 @@ export const listings = [
  "images": [
   "poster-l117.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l117.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l117.jpg",
  "view": "To confirm",
@@ -141,7 +143,9 @@ export const listings = [
  "images": [
   "poster-l111.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l111.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l111.jpg",
  "view": "Himalayan, seasonal",
@@ -180,7 +184,9 @@ export const listings = [
  "images": [
   "poster-l112.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l112.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l112.jpg",
  "view": "Ask us",
@@ -258,7 +264,9 @@ export const listings = [
  "images": [
   "poster-l114.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l114.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l114.jpg",
  "view": "Himalayan and valley",
@@ -369,7 +377,9 @@ export const listings = [
  "images": [
   "poster-l103.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l103.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l103.jpg",
  "view": "Ask us",
@@ -404,7 +414,9 @@ export const listings = [
  "images": [
   "poster-l104.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l104.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l104.jpg",
  "view": "Ask us",
@@ -439,7 +451,9 @@ export const listings = [
  "images": [
   "poster-l105.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l105.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l105.jpg",
  "view": "Ask us",
@@ -509,7 +523,9 @@ export const listings = [
  "images": [
   "poster-l107.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l107.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l107.jpg",
  "view": "Ask us",
@@ -544,7 +560,9 @@ export const listings = [
  "images": [
   "poster-l108.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l108.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l108.jpg",
  "view": "Ask us",
@@ -614,7 +632,9 @@ export const listings = [
  "images": [
   "poster-l110.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l110.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l110.jpg",
  "view": "Ask us",
@@ -689,7 +709,9 @@ export const listings = [
  "images": [
   "poster-l118.jpg"
  ],
- "videos": [],
+ "videos": [
+  "l118.mp4"
+ ],
  "hasVideo": true,
  "poster": "poster-l118.jpg",
  "view": "To confirm",

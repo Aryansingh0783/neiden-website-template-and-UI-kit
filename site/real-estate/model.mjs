@@ -6,7 +6,8 @@ export function ratePerSqft(property, units) {
 }
 export function selectProperties(properties, filters, units) {
   const term = (filters.q || '').toLocaleLowerCase().trim();
-  const result = properties.filter(p => (!filters.area || p.area === filters.area) && (!filters.access || p.access === filters.access) && (!filters.status || p.status === filters.status) && (!filters.type || p.type === filters.type) && (!term || `${p.name} ${p.id} ${p.area} ${p.type}`.toLocaleLowerCase().includes(term)));
+  const result = properties.filter(p => (!filters.area || p.area === filters.area) && (!filters.access || p.access === filters.access) && (!filters.status || p.status === filters.status) && (!filters.type || p.type === filters.type) && (!term || `${p.name} ${p.id} ${p.place||''} ${p.area} ${p.type}`.toLocaleLowerCase().includes(term)));
+  if (!filters.sort) result.sort((a,b) => (a.status==='Sold')-(b.status==='Sold'));
   if (filters.sort === 'price-low' || filters.sort === 'price-high') result.sort((a,b) => {
     const x=ratePerSqft(a,units),y=ratePerSqft(b,units);
     if(x===null)return y===null?0:1;

@@ -213,3 +213,30 @@
 @media(max-width:809px){.estate-footer nav{justify-content:start}}
 /* On short windows (small phones, landscape) the 120px bottom blur would sit over the hero button, so it is switched off. */
 @media(max-height:700px){.motion-edge-blur{display:none!important}}
+
+/* Devbhoomi conversion, phase 2: listings and property pages */
+.estate-badge--video{left:auto;right:16px}
+.estate-property--sold .estate-project-image img{filter:grayscale(.55);opacity:.82}
+.estate-detail-media{margin:0 var(--estate-gutter);display:grid;gap:24px;grid-template-columns:1fr;align-items:start}
+.estate-detail-media--pair{grid-template-columns:minmax(260px,440px) 1fr}
+.estate-detail-media .estate-detail-image{margin:0}
+.estate-detail-media--pair .estate-detail-image img{height:min(78vh,720px)}
+.estate-detail-video{margin:0;max-width:460px}
+.estate-detail-video video{display:block;width:100%;max-height:78vh;background:#1a1a18;object-fit:contain}
+.estate-detail-video figcaption{font-size:11px;color:#656561;margin-top:15px}
+.estate-detail-media .estate-detail-image:nth-of-type(n+3) img{height:50vw;max-height:600px}
+.estate-detail-copy{font-size:16px;line-height:1.6;max-width:640px;margin:0 0 18px}
+.estate-detail-sub{font:400 24px/1.1 Estate Display;letter-spacing:-.03em;margin:40px 0 14px}
+.estate-highlights{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 32px}
+.estate-highlights li{border-top:1px solid var(--estate-line);padding:14px 0;font-size:14px;line-height:1.45}
+.estate-aside-links{display:flex;flex-direction:column;gap:14px;align-items:flex-start;margin:0}
+.estate-detail aside .estate-aside-links .estate-text-link{display:inline-block}
+@media(max-width:1199px){.estate-detail-media--pair{grid-template-columns:1fr}.estate-detail-media--pair .estate-detail-image img{height:65vw;max-height:620px}}
+@media(max-width:809px){.estate-highlights{grid-template-columns:1fr}.estate-detail-video{max-width:none}.estate-detail-copy{font-size:15px}}
+.estate-detail-media--solo{grid-template-columns:minmax(260px,440px) 1fr;gap:6vw}
+.estate-glance{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;align-self:start;margin:0}
+.estate-glance>div{border-top:1px solid var(--estate-line);padding:18px 0 34px}
+.estate-glance dt{font-size:11px;text-transform:uppercase;color:#656561;margin-bottom:14px}
+.estate-glance dd{margin:0;font:400 clamp(24px,2.6vw,40px)/1.08 Estate Display;letter-spacing:-.035em}
+@media(max-width:1199px){.estate-detail-media--solo{grid-template-columns:1fr}.estate-glance{grid-template-columns:1fr 1fr}}
+.estate-detail-media{margin-top:36px}

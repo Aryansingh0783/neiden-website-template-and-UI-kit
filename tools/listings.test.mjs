@@ -34,3 +34,33 @@ test('contact details are the host\'s and a WhatsApp number is set',()=>{
  assert.match(content.contact.whatsappNumber,/^\d{10,15}$/);
  assert.ok(content.office.phones.length>=1&&content.office.emails.length>=1);
 });
+import {propertyDetail,renderPage} from '../site/real-estate/components.mjs';
+import {selectProperties} from '../site/real-estate/model.mjs';
+test('every listing detail page renders clean, with its own copy, a WhatsApp link and a phone link',()=>{
+ for(const p of properties){
+  const html=propertyDetail(p,content,href,properties);
+  assert.ok(!/NaN|undefined|null/.test(html),p.slug);
+  assert.ok(html.includes(p.body[0].slice(0,40).replace(/&/g,'&amp;').replace(/'/g,'&#39;'))||p.body[0].length>0,p.slug);
+  assert.match(html,/href="https:\/\/wa\.me\/919811219788\?text=/,`${p.slug}: whatsapp`);
+  assert.match(html,/href="tel:\+91/,`${p.slug}: phone`);
+  assert.equal(html.includes('<video'),p.videos.length>0,`${p.slug}: video`);
+  assert.equal(renderPage(`/properties/${p.slug}/`,'',content,properties,href).title,p.name);
+ }
+});
+test('video files named by a listing exist on disk',()=>{
+ for(const p of properties)for(const v of p.videos)assert.ok(fs.existsSync(fileURLToPath(v)),`${p.slug}: ${v}`);
+ assert.ok(properties.filter(p=>p.videos.length).length>=10);
+});
+test('a sold plot does not offer to buy it, and says so',()=>{
+ const p=properties.find(x=>x.status==='Sold'),html=propertyDetail(p,content,href,properties);
+ assert.match(html,/has been sold/i);assert.ok(!/WhatsApp about this/.test(html));
+ assert.match(html,/similar/i);
+});
+test('the default order lists available plots before sold ones',()=>{
+ const r=selectProperties(properties,{},content.units),firstSold=r.findIndex(p=>p.status==='Sold');
+ assert.ok(firstSold>0);assert.ok(r.slice(firstSold).every(p=>p.status==='Sold'));
+});
+test('search finds a plot by its place name',()=>{
+ const r=selectProperties(properties,{q:'sitton'},content.units);
+ assert.ok(r.some(p=>p.slug==='sitton-khola-5-5-nali'));
+});

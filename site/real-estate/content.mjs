@@ -5,7 +5,7 @@
  * host does not publish a fact, the page says "To confirm".
  */
 import { listings } from './listings.mjs';
-const media = name => new URL(`./assets/${name}`, import.meta.url).href;
+const media = name => { try { return new URL(`./assets/${name}`, import.meta.url).href; } catch { return `/real-estate/assets/${name}`; } }; // Workers have no import.meta.url, so fall back to the site path
 const listingImage = slug => listings.find(p => p.slug === slug)?.image;
 
 export const content = {

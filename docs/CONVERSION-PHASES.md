@@ -26,8 +26,8 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 | 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | **Approved by owner** |
 | 5 | Design pass | `impeccable` critique and polish across every page, `unslop` over all wording, image and video optimisation, accessibility and performance audit | **Approved by owner** |
 | 6 | Assistant rebuild | New assistant on a free AI API behind a Vercel function (the key never reaches the browser), answers grounded in the listing data, refuses invented prices and advice | **Approved by owner. Needs an API key to go live** |
-| 7 | Search readiness | Foundation built in phase 2 (see "SEO build"). Phase 7 is the final SEO audit: content depth per page, internal linking, image weight, Core Web Vitals, redirect map from every old URL | **Built, waiting for approval** |
-| 8 | Full audit and client demo | Automated crawl, accessibility, speed, link checks, a checklist for the client review | Not started |
+| 7 | Search readiness | Foundation built in phase 2 (see "SEO build"). Phase 7 is the final SEO audit: content depth per page, internal linking, image weight, Core Web Vitals, redirect map from every old URL | **Approved by owner** |
+| 8 | Full audit and client demo | Automated crawl, accessibility, speed, link checks, a checklist for the client review | **Built, waiting for approval** |
 | 9 | Go live (only after client approval) | Replace the live site, keep every old URL working or redirect it, keep the enquiry backend and Search Console clean | Not started |
 
 ## Phase 1 record
@@ -100,6 +100,13 @@ Audit tools: the `impeccable` detector (rendered pages at 1440 and 390 wide), `a
 - **Structured data, titles, canonicals, `noindex` on staging:** unchanged from the phase 2 build and covered by the same tests.
 - **Still manual:** the go-live steps in `docs/GO-LIVE.md`, and Search Console work after launch.
 - Tests: 56 pass.
+
+## Phase 8 record
+
+- Full audit passed: 120 page loads, 80 axe runs, keyboard, reduced motion, no JavaScript, 320 px reflow, 200 percent text, slow-phone speed. Details and limits in `docs/QA-REPORT.md`.
+- `docs/CLIENT-REVIEW.md` is the guide to hand the client (what to click, what is real, five questions).
+- Reusable audit scripts in `tools/audit/`.
+- Open points for the owner: kept bracket labels, missing plot facts, soft videos, font licence, `/stats/` and `/leads/`, AI key, Safari and Firefox check.
 
 ## SEO build (owner's rule: build every page with search in mind)
 

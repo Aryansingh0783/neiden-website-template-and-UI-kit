@@ -51,3 +51,5 @@ Add `--videos` in phase 2 to copy the listing videos as well.
 ## Previews on Vercel
 
 Vercel project: import this GitHub repo, Framework Preset **Other**, Build Command empty, Output Directory `site`. `vercel.json` handles the rest. Each branch and pull request then gets its own preview link. Previews are private by default (Vercel sign-in required).
+
+Note: `main` still holds the original template and Vercel serves it through `server.mjs`. Branches that carry `vercel.json` (from phase 1 on) are served as a static site from `site/` with no server. Phase previews come from their own branch deployments, not from the main URL.

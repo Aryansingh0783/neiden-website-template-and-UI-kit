@@ -1,7 +1,7 @@
 {
-  "verifiedAt": "2026-10-31T11:44:25.712Z",
-  "modules": 9,
-  "files": 25,
+  "verifiedAt": "2026-10-31T14:29:17.405Z",
+  "modules": 13,
+  "files": 78,
   "routes": [
     {
       "route": "/",
@@ -44,27 +44,83 @@
       "ok": true
     },
     {
-      "route": "/properties/open-ridge/",
+      "route": "/properties/sitton-khola-5-5-nali/",
       "ok": true
     },
     {
-      "route": "/properties/pine-edge/",
+      "route": "/properties/near-devprayag-railway-station/",
       "ok": true
     },
     {
-      "route": "/properties/valley-ground/",
+      "route": "/properties/kandogal-rishikesh-275-gaj/",
       "ok": true
     },
     {
-      "route": "/properties/garden-plot/",
+      "route": "/properties/buranshi-4-5-nali-himalaya-view/",
       "ok": true
     },
     {
-      "route": "/properties/woodland-cottage/",
+      "route": "/properties/khandusain-2-5-nali-branch-road/",
       "ok": true
     },
     {
-      "route": "/properties/ridge-retreat/",
+      "route": "/properties/devprayag-pauri-highway-3-25-nali/",
+      "ok": true
+    },
+    {
+      "route": "/properties/hotel-devprayag-pauri-road/",
+      "ok": true
+    },
+    {
+      "route": "/properties/khandusain-plot/",
+      "ok": true
+    },
+    {
+      "route": "/properties/main-pauri-road-pahadi-house/",
+      "ok": true
+    },
+    {
+      "route": "/properties/khandusain-main-highway/",
+      "ok": true
+    },
+    {
+      "route": "/properties/devprayag-pauri-highway-land/",
+      "ok": true
+    },
+    {
+      "route": "/properties/khandusain-block-road/",
+      "ok": true
+    },
+    {
+      "route": "/properties/kholachauri-village-land/",
+      "ok": true
+    },
+    {
+      "route": "/properties/pauri-village-28-nali/",
+      "ok": true
+    },
+    {
+      "route": "/properties/chandrabadni-37-nali/",
+      "ok": true
+    },
+    {
+      "route": "/properties/khirsu-village-land/",
+      "ok": true
+    },
+    {
+      "route": "/properties/devprayag-pauri-highway-2-65-nali/",
+      "ok": true
+    },
+    {
+      "route": "/properties/kholachauri-branch-road-400-sqm/",
+      "ok": true
+    },
+    {
+      "route": "/properties/khola-danda-4-5-nali/",
+      "ok": true
+    },
+    {
+      "route": "/properties/khandusain-branch-road-3-5-nali/",
       "ok": true
     }
   ],

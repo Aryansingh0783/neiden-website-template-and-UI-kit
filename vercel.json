@@ -1,0 +1,93 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "node tools/build.mjs",
+  "installCommand": "",
+  "outputDirectory": "dist",
+  "cleanUrls": false,
+  "trailingSlash": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    },
+    {
+      "source": "/real-estate/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    },
+    {
+      "source": "/real-estate/(.*)\\.(mjs|css)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/hi/properties/khandusain-4-5-nali-himalaya-view",
+      "destination": "/properties/buranshi-4-5-nali-himalaya-view/",
+      "permanent": true
+    },
+    {
+      "source": "/properties/khandusain-4-5-nali-himalaya-view",
+      "destination": "/properties/buranshi-4-5-nali-himalaya-view/",
+      "permanent": true
+    },
+    {
+      "source": "/hi/properties/buranshi-village-kot-block",
+      "destination": "/properties/khandusain-2-5-nali-branch-road/",
+      "permanent": true
+    },
+    {
+      "source": "/properties/buranshi-village-kot-block",
+      "destination": "/properties/khandusain-2-5-nali-branch-road/",
+      "permanent": true
+    },
+    {
+      "source": "/hi",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/hi/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*/index.html",
+      "destination": "/:path*/",
+      "permanent": true
+    },
+    {
+      "source": "/query.html",
+      "destination": "/contact/",
+      "permanent": true
+    }
+  ]
+}

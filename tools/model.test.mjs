@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ratePerSqft,selectProperties,convertArea,buildEnquiry,whatsappURL} from '../site/real-estate/model.mjs';
-import {content,properties} from '../site/real-estate/content.mjs';
+import {content,properties} from './fixtures/demo-content.mjs';
 test('mixed units sort by comparable square-foot rates, unknown prices last',()=>{
  assert.equal(ratePerSqft({rate:18000,rateUnit:'gaj'},content.units),2000);
  assert.deepEqual(selectProperties(properties,{sort:'price-low'},content.units).map(p=>p.id),['DEMO-02','DEMO-01','DEMO-04','DEMO-03','DEMO-05','DEMO-06']);

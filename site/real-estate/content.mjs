@@ -94,3 +94,15 @@ export const content = {
 };
 
 export const properties = listings;
+
+/** Business facts for structured data, copied from the live site's own JSON-LD and contact page. */
+export const business = {
+	alternateName: 'Dev Bhoomi Realtors',
+	geo: { latitude: 30.1566381, longitude: 78.6788746 },
+	founder: 'Resham Singh',
+	knowsAbout: ['Land and plot sales', 'Turnkey cottage development', 'Prefabricated PUF and steel-frame construction'],
+	areaServed: ['Rishikesh', 'Dehradun valley', 'Devprayag', 'Kholachauri & the road villages', 'Pauri Garhwal', 'Kot block'],
+	address: { streetAddress: 'Kholachauri village, Devprayag–Pauri road', addressLocality: 'Pauri Garhwal', addressRegion: 'Uttarakhand', postalCode: '246001', addressCountry: 'IN' },
+	hours: { opens: '10:00', closes: '18:00' },
+	languages: ['hi', 'en']
+};

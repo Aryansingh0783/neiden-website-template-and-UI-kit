@@ -1,5 +1,6 @@
 import { content as defaultContent, properties as defaultProperties } from './content.mjs';
-import { escape, action, footer, propertyCard, renderPage } from './components.mjs';
+import { escape, action, footer, propertyCard, renderPage, shell } from './components.mjs';
+import { seo } from './seo-data.mjs';
 import { normalPath, selectProperties, convertArea, buildEnquiry, whatsappURL } from './model.mjs';
 import { mountMotion } from '../effects/motion-kit.mjs';
 import { reducedMotion } from '../effects/motion-config.mjs';
@@ -16,7 +17,8 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  if(![...document.querySelectorAll('link[rel=stylesheet]')].some(x=>x.href===cssURL)){const css=document.createElement('link');css.rel='stylesheet';css.href=cssURL;document.head.append(css);}
  const allNav=[...content.navigation,...content.secondaryNavigation];
  const nav=items=>items.map(n=>`<a href="${href(n.href)}">${escape(n.label)}</a>`).join('');
- root.innerHTML=`<a href="#estate-page" class="estate-skip">Skip to content</a><header class="estate-shell estate-header"><a class="estate-brand" href="${href('/')}" aria-label="${escape(content.brand)} home">${escape(content.brandShort)}</a><nav aria-label="Primary">${nav(content.navigation)}</nav><button class="estate-menu-button" aria-label="Open menu" aria-controls="estate-menu" aria-expanded="false"></button></header><dialog class="estate-shell estate-menu" id="estate-menu" aria-label="Navigation" data-motion-native><div class="estate-menu-inner"><div class="estate-menu-top"><a class="estate-brand" href="${href('/')}" aria-label="${escape(content.brand)} home">${escape(content.brandShort)}</a><button class="estate-close" aria-label="Close menu">×</button></div><div class="estate-menu-columns"><nav aria-label="Expanded navigation">${nav(content.navigation)}</nav><nav class="estate-secondary-menu" aria-label="More pages">${nav(content.secondaryNavigation)}</nav></div><div class="estate-menu-bottom estate-meta"><span>Rishikesh / Devprayag / Kholachauri / Pauri</span><span>${escape(content.office.hours)}</span></div></div></dialog><main class="estate-shell estate-page" id="estate-page" tabindex="-1"></main><div class="estate-shell estate-footer-wrap">${footer(content,href)}</div>`;
+ const prerendered=root.querySelector('main[data-prerendered]');
+ if(!prerendered)root.innerHTML=shell(content,href);
  const page=root.querySelector('main'),menu=root.querySelector('dialog'),menuButton=root.querySelector('.estate-menu-button');
  const effects=motion?mountMotion({anchorNavigation:false,revealSelector:'.estate-app [data-motion-reveal]',footerSelector:'.estate-app footer',...(typeof motion==='object'?motion:{})}):null;
  const signal=new AbortController();const listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal:signal.signal});
@@ -30,7 +32,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  function draw(url){
    activeURL=new URL(url,location.href);const path=localPath(activeURL);
    const result=renderPage(path,activeURL.search,content,properties,href);
-   page.innerHTML=result.html;page.dataset.route=path;document.title=result.title===content.title?content.title:`${result.title} · ${content.brand}`;
+   page.innerHTML=result.html;page.dataset.route=path;document.title=seo[path]?.title||(result.title===content.title?content.title:`${result.title} · ${content.brand}`);
    for(const a of root.querySelectorAll('header nav a')){if(normalPath(new URL(a.href).pathname)===normalPath(activeURL.pathname))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}
    videoPreference();effects?.refresh();effects?.scroller?.resize();
  }
@@ -103,6 +105,10 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  });
  if(!onNavigate)listen(window,'popstate',()=>navigate(location.href,{pop:true}));
  const media=matchMedia('(prefers-reduced-motion: reduce)');listen(media,'change',videoPreference);
- draw(location.href);
+ if(prerendered&&prerendered.dataset.route===localPath(activeURL)&&!activeURL.search){
+   delete page.dataset.prerendered;
+   for(const a of root.querySelectorAll('header nav a')){if(normalPath(new URL(a.href).pathname)===normalPath(activeURL.pathname))a.setAttribute('aria-current','page');}
+   videoPreference();effects?.refresh();effects?.scroller?.resize();
+ }else draw(location.href);
  return {navigate,render:draw,closeMenu,effects,content,properties,destroy(){destroyed=true;closeMenu();signal.abort();effects?.destroy();if(!onNavigate)history.scrollRestoration=previousRestoration;root.innerHTML='';root.classList.remove('estate-app');delete root.dataset.estateMounted;}};
 }

@@ -59,3 +59,5 @@ For a full template mount, import `mountRealEstate` from `site/real-estate/templ
 Use `site/effects/demo.html` to inspect the motion kit independently. Static production hosting needs fallback/rewrite rules for these client routes; the bundled Node server provides that for local preview. Preserve the real site's server-rendered metadata, structured data, canonical URLs and content when integrating.
 
 Third-party provenance and notices are in `docs/ASSETS-AND-NOTICES.md` and alongside the assets.
+
+Build the static, search-ready site into `dist/` with `npm run build` (see `docs/CONVERSION-PHASES.md`, section "SEO build"). `npm start` still serves `site/` for quick local work.

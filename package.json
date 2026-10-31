@@ -1,1 +1,16 @@
-{"name":"neiden-real-estate-template","private":true,"version":"1.0.0","type":"module","scripts":{"start":"node server.mjs","verify":"node tools/verify.mjs","test":"node --test tools/model.test.mjs tools/render.test.mjs tools/listings.test.mjs","import":"node tools/import-devbhoomi.mjs"},"engines":{"node":">=18"}}
+{
+  "name": "neiden-real-estate-template",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "verify": "node tools/verify.mjs",
+    "test": "node --test tools/model.test.mjs tools/render.test.mjs tools/listings.test.mjs tools/seo.test.mjs",
+    "import": "node tools/import-devbhoomi.mjs",
+    "build": "node tools/build.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

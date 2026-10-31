@@ -8,15 +8,16 @@ export function assistantHTML(c) {
   return `<div class="estate-assistant" data-assistant data-wa="${esc(wa)}" data-phone="${esc(c.office.phones[0])}"><button class="estate-assistant-open" type="button" aria-expanded="false" aria-controls="estate-assistant-panel">Ask us</button><section id="estate-assistant-panel" class="estate-assistant-panel" role="dialog" aria-label="Ask ${esc(c.brand)}" hidden><header><strong>Ask us</strong><button class="estate-assistant-close" type="button" aria-label="Close the assistant">×</button></header><div class="estate-assistant-log" role="log" aria-live="polite"><p class="estate-assistant-hello">Ask about plots, areas, papers or buying from outside the state.</p></div><form class="estate-assistant-form"><label class="estate-sr" for="estate-assistant-q">Your question</label><input id="estate-assistant-q" name="q" type="text" maxlength="600" autocomplete="off" required><button type="submit">Send</button></form><p class="estate-assistant-note">Answers come from our listings and pages. Confirm prices and papers with us. <a href="${esc(wa)}" target="_blank" rel="noopener">WhatsApp us</a></p></section></div>`;
 }
 
-/** Turns /properties/slug/ paths in a reply into links with the plot's name. Everything else stays plain text. */
-export function linkify(text, properties, href = p => p) {
-  const nodes = [], re = /\/properties\/([a-z0-9-]+)\//g;
+/** Turns site paths in a reply (a plot, or any page) into links labelled with the plot name or page title. Everything else stays text. */
+export function linkify(text, properties, href = p => p, titles = {}) {
+  const nodes = [], re = /\/(?:[a-z0-9-]+\/)+/g;
   let last = 0, m;
   while ((m = re.exec(text))) {
-    const p = properties.find(x => x.slug === m[1]);
-    if (!p) continue;
+    const plot = m[0].startsWith('/properties/') ? properties.find(x => `/properties/${x.slug}/` === m[0]) : null;
+    const label = plot ? plot.name : titles[m[0]];
+    if (!label) continue;
     if (m.index > last) nodes.push({ text: text.slice(last, m.index) });
-    nodes.push({ text: p.name, href: href(`/properties/${p.slug}/`) });
+    nodes.push({ text: label, href: href(m[0]) });
     last = m.index + m[0].length;
   }
   if (last < text.length) nodes.push({ text: text.slice(last) });
@@ -29,7 +30,7 @@ export function messageFor(status) {
   return 'failed';
 }
 
-export function mountAssistant(root, { properties, href = p => p, signal, fetchImpl = fetch } = {}) {
+export function mountAssistant(root, { properties, href = p => p, titles = {}, signal, fetchImpl = fetch } = {}) {
   const box = root.querySelector('[data-assistant]');
   if (!box) return;
   const openBtn = box.querySelector('.estate-assistant-open'), panel = box.querySelector('.estate-assistant-panel'), log = box.querySelector('.estate-assistant-log'), form = box.querySelector('form'), input = box.querySelector('input');
@@ -38,7 +39,7 @@ export function mountAssistant(root, { properties, href = p => p, signal, fetchI
   const say = (who, text, extra) => {
     const p = document.createElement('p');
     p.className = `estate-assistant-msg estate-assistant-${who}`;
-    if (who === 'bot') for (const n of linkify(text, properties, href)) { if (n.href) { const a = document.createElement('a'); a.href = n.href; a.textContent = n.text; p.append(a); } else p.append(document.createTextNode(n.text)); }
+    if (who === 'bot') for (const n of linkify(text, properties, href, titles)) { if (n.href) { const a = document.createElement('a'); a.href = n.href; a.textContent = n.text; p.append(a); } else p.append(document.createTextNode(n.text)); }
     else p.textContent = text;
     if (extra) p.append(extra);
     log.append(p); log.scrollTop = log.scrollHeight; return p;

@@ -108,6 +108,16 @@ Audit tools: the `impeccable` detector (rendered pages at 1440 and 390 wide), `a
 - Reusable audit scripts in `tools/audit/`.
 - Open points for the owner: kept bracket labels, missing plot facts, soft videos, font licence, `/stats/` and `/leads/`, AI key, Safari and Firefox check.
 
+## Assistant grounding (after phase 9)
+
+The assistant is not "trained" on the site. A language model is never fine-tuned here; instead every answer is limited to the website's own text, in three steps (`api/knowledge.js`, `api/assistant.js`):
+1. **Index:** every plot and every section of every page (103 sections) is turned into a searchable chunk, built from the same files that build the pages, so it can never drift from what visitors read.
+2. **Retrieve:** for each question only the 5 best matching sections are sent to the model, plus a fixed core (office details and one line per plot). A question that matches nothing, such as "what is the capital of France", is **never sent to the model at all** and gets a fixed answer. Greetings also get a fixed answer. This uses no free quota.
+3. **Check:** the model is told to use only that text, and any price, size or phone number in its reply that is not on the website is caught in code and replaced.
+
+Maintenance: nothing to retrain. Change a page and the assistant knows on the next deploy. If a real visitor question is wrongly refused, add the word to the `SYN` table in `api/knowledge.js`.
+Tests: `tools/assistant.test.mjs` (63 in total pass).
+
 ## SEO build (owner's rule: build every page with search in mind)
 
 The template was a client-side single-page app, which search engines see as an empty page until JavaScript runs. Phase 2 replaced that with a prerendered static build:

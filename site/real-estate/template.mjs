@@ -23,7 +23,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  const page=root.querySelector('main'),menu=root.querySelector('dialog'),menuButton=root.querySelector('.estate-menu-button');
  const effects=motion?mountMotion({anchorNavigation:false,revealSelector:'.estate-app [data-motion-reveal]',footerSelector:'.estate-app footer',...(typeof motion==='object'?motion:{})}):null;
  const signal=new AbortController();const listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal:signal.signal});
- mountAssistant(root,{properties,href,signal:signal.signal});
+ mountAssistant(root,{properties,href,titles:Object.fromEntries(Object.entries(seo).map(([k,v])=>[k,v.title.split(' · ')[0]])),signal:signal.signal});
  const positions=new Map();let key=history.state?.estateKey||uid(),busy=false,queued=null,oldOverflow='',destroyed=false,activeURL=new URL(location.href);
  const previousRestoration=history.scrollRestoration;
  if(!onNavigate){history.scrollRestoration='manual';history.replaceState({...history.state,estateKey:key},'');}

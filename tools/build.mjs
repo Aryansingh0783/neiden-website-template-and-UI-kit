@@ -13,8 +13,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { content, properties, business } from '../site/real-estate/content.mjs';
+import { pages } from '../site/real-estate/pages.mjs';
 import { seo } from '../site/real-estate/seo-data.mjs';
-import { renderPage, shell, escape as esc } from '../site/real-estate/components.mjs';
+import { renderPage, shell, routeList, escape as esc } from '../site/real-estate/components.mjs';
 import { normalPath } from '../site/real-estate/model.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -27,7 +28,8 @@ const href = p => normalPath(p).split('/').map(encodeURIComponent).join('/');
 const abs = p => SITE + (p.startsWith('/') ? p : '/' + p);
 const rel = url => String(url).startsWith(fileBase) ? String(url).slice(fileBase.length) : String(url);
 
-const routes = [...new Set(['/', '/properties/', ...properties.map(p => `/properties/${p.slug}/`), ...[...content.navigation, ...content.secondaryNavigation].map(n => normalPath(n.href)), '/privacy/'])];
+const routes = routeList(content, properties).map(r => normalPath(r));
+const NOINDEX = new Set(['/thank-you/']);
 const bySlug = Object.fromEntries(properties.map(p => [`/properties/${p.slug}/`, p]));
 const clip = (t, n) => (t.length <= n ? t : t.slice(0, n - 1).replace(/\s+\S*$/, '') + '…');
 
@@ -40,8 +42,17 @@ function crumbs(route) {
   const p = bySlug[route];
   const items = [['Home', '/']];
   if (p) items.push(['Properties', '/properties/'], [p.place || p.name, null]);
-  else { const label = [...content.navigation, ...content.secondaryNavigation].find(n => normalPath(n.href) === route)?.label || (route === '/privacy/' ? 'Privacy' : route); items.push([label, null]); }
-  return { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, p], i) => ({ '@type': 'ListItem', position: i + 1, name, ...(p ? { item: abs(p) } : { item: abs(route) }) })) };
+  else if (route.startsWith('/areas/') && route !== '/areas/') items.push(['Areas', '/areas/'], [pages[route].h1, null]);
+  else if (route.startsWith('/updates/') && route !== '/updates/') items.push(['Updates', '/updates/'], [pages[route].h1, null]);
+  else { const label = [...content.navigation, ...content.secondaryNavigation].find(n => normalPath(n.href) === route)?.label || (pages[route] ? pages[route].h1 : route); items.push([label, null]); }
+  return { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, p], i) => ({ '@type': 'ListItem', position: i + 1, name, item: abs(p || route) })) };
+}
+function article(route) {
+  const pg = pages[route], m = (pg.kicker || '').match(/(\d{1,2}) (\w+) (\d{4})/);
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const date = m && months.indexOf(m[2]) >= 0 ? `${m[3]}-${String(months.indexOf(m[2]) + 1).padStart(2, '0')}-${m[1].padStart(2, '0')}` : null;
+  const vid = pg.blocks.find(b => b.t === 'video');
+  return { '@context': 'https://schema.org', '@type': 'Article', headline: pg.h1, description: seo[route]?.description || pg.lead, mainEntityOfPage: abs(route), ...(date ? { datePublished: date, dateModified: date } : {}), author: { '@type': 'Person', name: business.founder }, publisher: { '@type': 'RealEstateAgent', name: content.brand, url: abs('/') }, ...(vid ? { image: abs(rel(vid.poster || content.hero.image)) } : {}) };
 }
 function product(p, route) {
   const sqft = p.size != null && content.units[p.unit] ? Math.round(p.size * content.units[p.unit]) : null;
@@ -56,15 +67,15 @@ const faqLD = list => ({ '@context': 'https://schema.org', '@type': 'FAQPage', m
 function document_(route, result, { notFound = false } = {}) {
   const p = bySlug[route], meta = seo[route] || {};
   const title = meta.title || (route === '/' ? content.title : `${result.title} · ${content.brand}`);
-  const description = meta.description || content.description;
+  const description = meta.description && meta.description.length >= 60 ? meta.description : (pages[route]?.lead && pages[route].lead.length >= 60 ? pages[route].lead : content.description);
   const url = abs(route), image = abs(rel(p ? (p.poster || p.image) : content.hero.image));
-  const index = INDEX && !notFound;
-  const ld = [agent(url), crumbs(route), p ? product(p, route) : null, (route === '/' || route === '/about/' || route === '/guide/') ? faqLD(content.faqs) : null].filter(Boolean);
+  const index = INDEX && !notFound && !NOINDEX.has(route);
+  const ld = [agent(url), crumbs(route), p ? product(p, route) : null, route.startsWith('/updates/') && route !== '/updates/' ? article(route) : null, (route === '/' || route === '/about/' || route === '/guide/') ? faqLD(content.faqs) : null].filter(Boolean);
   const html = shell(content, href, result.html, route).replaceAll(fileBase, '');
   const head = [
     '<meta charset="utf-8">', '<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta name="theme-color" content="#f6f6f3">',
     `<title>${esc(title)}</title>`, `<meta name="description" content="${esc(description)}">`,
-    `<meta name="robots" content="${index ? 'index,follow,max-image-preview:large,max-snippet:-1' : 'noindex,nofollow'}">`,
+    `<meta name="robots" content="${index ? 'index,follow,max-image-preview:large,max-snippet:-1' : (INDEX ? 'noindex,follow' : 'noindex,nofollow')}">`,
     notFound ? '' : `<link rel="canonical" href="${esc(url)}">`,
     `<meta property="og:type" content="${p ? 'product' : 'website'}">`, `<meta property="og:site_name" content="${esc(content.brand)}">`, '<meta property="og:locale" content="en_IN">',
     `<meta property="og:title" content="${esc(title)}">`, `<meta property="og:description" content="${esc(description)}">`, `<meta property="og:url" content="${esc(url)}">`, `<meta property="og:image" content="${esc(image)}">`,
@@ -89,6 +100,6 @@ for (const route of routes) {
   count++;
 }
 writeRoute('/404/', '404.html', document_('/404/', renderPage('/404/', '', content, properties, href), { notFound: true }));
-fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map(r => `<url><loc>${abs(r)}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
+fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.filter(r => !NOINDEX.has(r)).map(r => `<url><loc>${abs(r)}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(path.join(dist, 'robots.txt'), INDEX ? `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n` : 'User-agent: *\nDisallow: /\n');
 console.log(`Built ${count} pages and 404.html into dist/ (${INDEX ? 'indexable' : 'noindex staging'}, canonical ${SITE}).`);

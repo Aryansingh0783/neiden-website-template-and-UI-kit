@@ -40,6 +40,42 @@ export const seo = {
   "title": "Privacy policy · Devbhoomi Realtors",
   "description": "What we collect and what we do with it. No accounts and no tracking cookies. Short, and in plain language."
  },
+ "/disclaimer/": {
+  "title": "Disclaimer · Devbhoomi Realtors",
+  "description": "What to rely on and what not to. Prices here are indicative, and the information is general guidance, not legal advice."
+ },
+ "/testimonials/": {
+  "title": "What buyers say · Devbhoomi Realtors",
+  "description": "Reviews from people who have bought land with us on the Devprayag-Pauri belt."
+ },
+ "/updates/": {
+  "title": "Updates from the belt · Devbhoomi Realtors",
+  "description": "What is changing on the Devprayag–Pauri belt: infrastructure, access, prices and the areas around our listings."
+ },
+ "/updates/devprayag-railway-station/": {
+  "title": "Devprayag railway station progress · Devbhoomi Realtors",
+  "description": "A look at the site of the upcoming Devprayag railway station on the Rishikesh–Karnaprayag line, and what it means for land nearby."
+ },
+ "/referral/": {
+  "title": "Refer a friend, win a 2-day stay · Devbhoomi Realtors",
+  "description": "Bring someone to see land on the Devprayag-Pauri belt. If they visit, you both go into the draw for a two-day stay at Kholachauri, on us."
+ },
+ "/thank-you/": {
+  "title": "Thank you · Devbhoomi Realtors",
+  "description": "Received."
+ },
+ "/areas/devprayag/": {
+  "title": "Devprayag, land · Devbhoomi Realtors",
+  "description": "Devprayag sits on NH-7 at the confluence of the Alaknanda and the Bhagirathi, the point where the Ganga is named. It is the most recognised address on the"
+ },
+ "/areas/kholachauri-corridor/": {
+  "title": "Land at Kholachauri, Pauri Garhwal · Devbhoomi Realtors",
+  "description": "Land at Kholachauri, our family's home village in the middle of the Devprayag–Pauri belt. Priced well below Devprayag or Pauri town, on the same road."
+ },
+ "/areas/pauri-garhwal/": {
+  "title": "Pauri Garhwal and Khandusain, land · Devbhoomi Realtors",
+  "description": "Land in Pauri Garhwal: the town ridge at about 2,000 m and village plots around it, including Khandusain. What buyers pay for, and what to check first."
+ },
  "/properties/sitton-khola-5-5-nali/": {
   "title": "5.5 nali at Sitton Khola, east facing · Devbhoomi Realtors",
   "description": "5.5 nali of east-facing land at Sitton Khola on the Devprayag–Pauri belt at ₹17 lakh per nali, with a valley and a Himalayan view."

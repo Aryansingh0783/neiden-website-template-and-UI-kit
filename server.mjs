@@ -2,9 +2,10 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { properties } from './site/real-estate/content.mjs';
+import { content, properties } from './site/real-estate/content.mjs';
+import { routeList } from './site/real-estate/components.mjs';
 const root=path.join(path.dirname(fileURLToPath(import.meta.url)),'site');
-const routes=new Set(['','properties','areas','cottages','about','services','guide','contact','land-valuation','privacy',...properties.map(p=>`properties/${p.slug}`)]);
+const routes=new Set(routeList(content,properties).map(r=>r.split('/').filter(Boolean).join('/')));
 const types={'.html':'text/html; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.jpg':'image/jpeg','.png':'image/png','.woff2':'font/woff2','.mp4':'video/mp4','.json':'application/json'};
 const port=Number(process.env.PORT||4173);
 http.createServer((req,res)=>{

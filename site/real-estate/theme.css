@@ -240,3 +240,94 @@
 .estate-glance dd{margin:0;font:400 clamp(24px,2.6vw,40px)/1.08 Estate Display;letter-spacing:-.035em}
 @media(max-width:1199px){.estate-detail-media--solo{grid-template-columns:1fr}.estate-glance{grid-template-columns:1fr 1fr}}
 .estate-detail-media{margin-top:36px}
+/* The hero image is over-scaled for parallax; without a clip it spilled ~30px below the hero as a grey band over the quick links. */
+.estate-hero{overflow:clip}
+
+/* Devbhoomi conversion, phase 3: the other pages */
+.estate-footer-legal{display:flex;gap:22px}
+.estate-article-intro{display:grid;gap:22px;max-width:760px;font-size:17px;line-height:1.6}
+.estate-article-intro p{margin:0}
+.estate-article-section{display:grid;grid-template-columns:minmax(220px,1fr) 2fr;gap:6vw;align-items:start;padding-top:80px;padding-bottom:80px}
+.estate-article-heading{font:400 clamp(28px,3.2vw,48px)/1.05 Estate Display;letter-spacing:-.035em;margin:0;position:sticky;top:90px;text-wrap:balance}
+h3.estate-article-heading{font-size:clamp(22px,2.2vw,32px)}
+.estate-article-body{display:grid;gap:20px;max-width:720px;font-size:17px;line-height:1.6}
+.estate-article-body>*{margin:0}
+.estate-article-body a{text-decoration:underline;text-underline-offset:3px}
+.estate-sub{font:400 20px/1.2 Estate Display;letter-spacing:-.02em;margin-top:14px}
+.estate-list{list-style:none;padding:0;display:grid;gap:0}
+.estate-list li{border-top:1px solid var(--estate-line);padding:14px 0 14px 22px;position:relative;font-size:16px;line-height:1.5}
+.estate-list li:last-child{border-bottom:1px solid var(--estate-line)}
+.estate-list li::before{content:'';position:absolute;left:0;top:23px;width:8px;height:8px;border:1px solid var(--estate-accent)}
+.estate-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:24px}
+.estate-cards>div{border-top:1px solid var(--estate-line);padding-top:18px}
+.estate-cards h3{font:400 22px/1.15 Estate Display;letter-spacing:-.025em;margin:0 0 10px}
+.estate-cards p{font-size:15px;line-height:1.5;margin:0}
+.estate-table{width:100%;border-collapse:collapse;font-size:15px}
+.estate-table th,.estate-table td{text-align:left;padding:13px 12px 13px 0;border-top:1px solid var(--estate-line);font-weight:400}
+.estate-table thead th{font-size:11px;text-transform:uppercase;color:#656561;border-top:0}
+.estate-table tbody th{font-weight:500}
+.estate-callout{border:1px solid var(--estate-line);padding:24px 28px;background:#efefec}
+.estate-callout strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.02em;margin-bottom:10px}
+.estate-callout p{font-size:15px;line-height:1.55;margin:0}
+.estate-figure{margin:0}
+.estate-figure img,.estate-figure video{display:block;width:100%;height:auto;max-height:78vh;object-fit:cover}
+.estate-figure--video video{max-width:460px;background:#1a1a18;object-fit:contain}
+.estate-gallery{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.estate-gallery figure{margin:0}
+.estate-gallery img{display:block;width:100%;aspect-ratio:4/3;height:auto;object-fit:cover}
+.estate-gallery figcaption{font-size:12px;color:#656561;margin-top:10px;line-height:1.4}
+.estate-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.estate-stats-row>div{border-top:1px solid var(--estate-line);padding-top:18px}
+.estate-stats-row .estate-stat-value{font:400 clamp(30px,3.4vw,52px)/1 Estate Display;letter-spacing:-.04em;margin:0 0 8px}
+.estate-stats-row .estate-stat-label{font-size:12px;text-transform:uppercase;margin:0 0 10px}
+.estate-stats-row .estate-stat-note{font-size:14px;line-height:1.45;color:#444;margin:0}
+.estate-suited{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px}
+.estate-suited span{font-size:11px;text-transform:uppercase;color:#656561;margin-right:6px}
+.estate-suited b{font-weight:400;border:1px solid var(--estate-line);padding:7px 14px}
+.estate-cta{display:flex;flex-wrap:wrap;gap:22px;align-items:center}
+.estate-cta .estate-action{min-width:min(100%,320px)}
+.estate-reviewed{font-size:12px;color:#656561;padding:0 var(--estate-gutter) 24px;margin:0}
+.estate-toc{display:flex;flex-wrap:wrap;gap:8px 26px;align-items:baseline;padding:22px var(--estate-gutter);border-bottom:1px solid var(--estate-line);font-size:13px}
+.estate-toc a{text-decoration:underline;text-underline-offset:3px}
+.estate-areacards{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--estate-line)}
+.estate-areacards article{padding:34px 34px 38px 0;border-bottom:1px solid var(--estate-line);display:grid;gap:10px;align-content:start}
+.estate-areacards article:nth-child(even){padding-left:34px;padding-right:0;border-left:1px solid var(--estate-line)}
+.estate-areacards h3{font:400 clamp(28px,3vw,44px)/1.05 Estate Display;letter-spacing:-.035em;margin:0}
+.estate-areacards p{margin:0;font-size:15px;line-height:1.5;max-width:420px}
+.estate-areacard-alt{font:400 clamp(34px,4vw,60px)/1 Estate Display!important;letter-spacing:-.04em;color:var(--estate-accent)}
+.estate-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 32px;margin-bottom:60px}
+.estate-quotes figure{margin:0;border-top:1px solid var(--estate-line);padding-top:22px;display:grid;gap:22px;align-content:space-between}
+.estate-quotes blockquote{margin:0;font-size:19px;line-height:1.5}
+.estate-quotes figcaption{display:grid;gap:3px;font-size:13px}
+.estate-quotes figcaption span{color:#656561}
+.estate-update{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center}
+.estate-update img{display:block;width:100%;height:auto;aspect-ratio:3/4;max-height:620px;object-fit:cover}
+.estate-update h2{font:400 clamp(30px,3.4vw,52px)/1.05 Estate Display;letter-spacing:-.035em;margin:14px 0 20px}
+.estate-update p{max-width:520px;font-size:17px;line-height:1.55}
+.estate-contact{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:start}
+.estate-contact h2{margin:0 0 28px;position:static}
+.estate-contact>div{display:grid;gap:18px;font-size:16px;line-height:1.5}
+.estate-contact>div>*{margin:0}
+.estate-contact address{font-style:normal}
+.estate-contact a:not(.estate-action):not(.estate-text-link){text-decoration:underline;text-underline-offset:3px}
+.estate-people{list-style:none;padding:0;display:grid;gap:0}
+.estate-people li{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--estate-line);padding:14px 0;font-size:17px}
+.estate-people li:last-child{border-bottom:1px solid var(--estate-line)}
+.estate-people span{color:#656561;font-size:14px}
+.estate-sell-note{display:grid;gap:18px;max-width:640px}
+.estate-sell-note h3{font:400 clamp(28px,3vw,44px)/1.05 Estate Display;letter-spacing:-.035em;margin:0}
+.estate-sell-note p{margin:0;font-size:17px;line-height:1.55}
+.estate-tiers{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.estate-tiers li{border-top:1px solid var(--estate-line);padding-top:20px;display:grid;gap:12px;align-content:start}
+.estate-tiers h3{font:400 clamp(24px,2.4vw,34px)/1.1 Estate Display;letter-spacing:-.03em;margin:0}
+.estate-tiers p{margin:0;font-size:15px;line-height:1.5}
+.estate-tiers .estate-tier-note{font-size:12px;text-transform:uppercase;color:var(--estate-accent)}
+@media(max-width:1199px){.estate-quotes{grid-template-columns:1fr 1fr}.estate-article-section{grid-template-columns:1fr;gap:28px;padding-top:56px;padding-bottom:56px}.estate-article-heading{position:static}.estate-update{grid-template-columns:1fr}.estate-tiers{grid-template-columns:1fr}}
+@media(max-width:809px){.estate-quotes,.estate-contact,.estate-areacards,.estate-gallery,.estate-stats-row{grid-template-columns:1fr}.estate-areacards article,.estate-areacards article:nth-child(even){padding:28px 0;border-left:0}.estate-article-body,.estate-article-intro{font-size:16px}.estate-footer-legal{gap:16px}}
+/* Full business name in the header and menu */
+.estate-brand{white-space:nowrap;letter-spacing:-.045em}
+@media(max-width:809px){.estate-brand{font-size:22px}}
+.estate-article-intro{max-width:none}.estate-article-intro>p,.estate-article-intro>ul{max-width:760px}
+.estate-article-body .estate-process-grid{grid-template-columns:1fr 1fr;gap:28px 24px}
+.estate-footer-wordmark{font-size:clamp(70px,14vw,260px)}
+.estate-article-intro .estate-figure{max-width:520px}.estate-article-intro .estate-figure img{max-height:none;object-fit:contain}

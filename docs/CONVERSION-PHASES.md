@@ -21,8 +21,8 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 | # | Phase | What the owner sees | Status |
 |---|---|---|---|
 | 1 | Foundation and Home | Devbhoomi brand, header, footer, real home page, all 20 real listings loaded | **Approved by owner** |
-| 2 | Listings | Property list with filters and sorting, full detail pages with photos, videos, highlights, WhatsApp per plot | **Built, waiting for approval** |
-| 3 | The other pages | Areas (with their own pages), Cottages, Services, About, Guide, Testimonials (6 real), Updates, Referral, legal pages | Not started |
+| 2 | Listings | Property list with filters and sorting, full detail pages with photos, videos, highlights, WhatsApp per plot | **Approved by owner** |
+| 3 | The other pages | Areas (with their own pages), Cottages, Services, About, Guide, Testimonials (6 real), Updates, Referral, legal pages | **Built, waiting for approval** |
 | 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | Not started |
 | 5 | Design pass | `impeccable` critique and polish across every page, `unslop` over all wording, image and video optimisation, accessibility and performance audit | Not started |
 | 6 | Assistant rebuild | New assistant on a free AI API behind a Vercel function (the key never reaches the browser), answers grounded in the listing data, refuses invented prices and advice | Not started |
@@ -48,6 +48,16 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 - Listing page: available land first, sold dimmed, Video badge, search also matches the place name, "Ask us" road access reads "Ask about access".
 - Tests: 18 pass (`npm test`), `npm run verify` passes. All 20 detail pages loaded on desktop and mobile with no console errors, failed requests or overflow.
 - Known host-copy quirks kept as written: some sold plots' write-ups still quote a price in the prose, and "View" reads "Ask us" on a few.
+
+## Phase 3 record
+
+- 17 live pages imported as structured blocks by `tools/import-pages.mjs` into `site/real-estate/pages.mjs` (generated): About, Areas and its three area pages, Cottages, Services, Guide (From outside the state), Land valuation, Contact, Testimonials (the six real quotes, no star ratings), Updates and the railway station article (with video), Referral, Disclaimer, Privacy, Thank you.
+- The live site's URLs are kept as they are (for example `/areas/kholachauri-corridor/`), so nothing needs a redirect for these pages.
+- The business name now reads "Devbhoomi Realtors" in the header, menu and footer (the template's short lowercase mark was removed).
+- Fixed a grey band under the home hero (the over-scaled hero image spilled below the hero).
+- Forms (contact, land valuation, referral) still only prepare a draft or open WhatsApp; the real enquiry flow is phase 4. The referral page opens WhatsApp with a generic referral message until the form is built.
+- `/thank-you/` is `noindex` and left out of the sitemap, as on the live site.
+- Tests: 32 pass (`npm test`), including `tools/pages.test.mjs`.
 
 ## SEO build (owner's rule: build every page with search in mind)
 

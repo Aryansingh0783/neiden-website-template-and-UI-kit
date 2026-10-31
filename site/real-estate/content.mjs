@@ -9,7 +9,7 @@ const media = name => new URL(`./assets/${name}`, import.meta.url).href;
 const listingImage = slug => listings.find(p => p.slug === slug)?.image;
 
 export const content = {
-  brand: 'Devbhoomi Realtors', brandShort: 'devbhoomi.', accent: '#ec4134',
+  brand: 'Devbhoomi Realtors', brandShort: 'Devbhoomi Realtors', accent: '#ec4134',
   title: 'Land and plots, Rishikesh to Pauri · Devbhoomi Realtors',
   description: 'Land, plots and commercial property from Rishikesh up the Devprayag–Pauri belt to Pauri Garhwal. Papers checked before you visit. We live on this road.',
   hero: {
@@ -19,7 +19,7 @@ export const content = {
     cta: 'WhatsApp us', ctaSecondary: 'See available land',
   },
   navigation: [{label:'Properties',href:'/properties/'},{label:'Areas',href:'/areas/'},{label:'Cottages',href:'/cottages/'},{label:'Contact',href:'/contact/'}],
-  secondaryNavigation: [{label:'About',href:'/about/'},{label:'Services',href:'/services/'},{label:'From outside the state',href:'/guide/'},{label:'What is my land worth?',href:'/land-valuation/'}],
+  secondaryNavigation: [{label:'About',href:'/about/'},{label:'Services',href:'/services/'},{label:'From outside the state',href:'/guide/'},{label:'What is my land worth?',href:'/land-valuation/'},{label:'What buyers say',href:'/testimonials/'},{label:'Updates',href:'/updates/'},{label:'Refer a friend',href:'/referral/'}],
   disciplines: ['Buying assistance','Land & plot deals','Local consultation'],
   quicklinks: [{label:'Available plots',href:'/properties/'},{label:'Areas we work',href:'/areas/'},{label:'What is my land worth',href:'/land-valuation/'},{label:'Ask on WhatsApp',whatsapp:true}],
   intro: {
@@ -35,10 +35,10 @@ export const content = {
   available: { label: 'Available now', heading: 'Land on our books right now.', detail: 'Land currently on our books across the belt.', featured: ['sitton-khola-5-5-nali','kandogal-rishikesh-275-gaj','near-devprayag-railway-station'] },
   belt: { label: 'The belt', heading: 'The Devprayag–Pauri belt.', body: 'Roughly 135 km of road that climbs from Rishikesh at 340 m, through the river confluence at Devprayag, to a ridge town at 2,000 m. That climb is the whole story of this belt: it decides your view, your water, your winter, and your price.' },
   areas: [
-    {id:'dehradun',name:'Rishikesh & the valley',line:'The bottom of the road, where the hills meet the plains. Flat, plotted land, and the coming Devprayag railway station puts this end within reach.',image:listingImage('kandogal-rishikesh-275-gaj')},
-    {id:'devprayag',name:'Devprayag',line:'The gateway. Where the two rivers become the Ganga.',image:listingImage('chandrabadni-37-nali')},
-    {id:'kholachauri',name:'Kholachauri & the road villages',line:'Our home ground. We do not operate here. We live here.',image:listingImage('sitton-khola-5-5-nali')},
-    {id:'pauri',name:'Pauri Garhwal',line:'The high end of the belt, and the snow line, on a clear morning.',image:listingImage('buranshi-4-5-nali-himalaya-view')},
+    {id:'dehradun',href:'/properties/kandogal-rishikesh-275-gaj/',name:'Rishikesh & the valley',line:'The bottom of the road, where the hills meet the plains. Flat, plotted land, and the coming Devprayag railway station puts this end within reach.',image:listingImage('kandogal-rishikesh-275-gaj')},
+    {id:'devprayag',href:'/areas/devprayag/',name:'Devprayag',line:'The gateway. Where the two rivers become the Ganga.',image:listingImage('chandrabadni-37-nali')},
+    {id:'kholachauri',href:'/areas/kholachauri-corridor/',name:'Kholachauri & the road villages',line:'Our home ground. We do not operate here. We live here.',image:listingImage('sitton-khola-5-5-nali')},
+    {id:'pauri',href:'/areas/pauri-garhwal/',name:'Pauri Garhwal',line:'The high end of the belt, and the snow line, on a clear morning.',image:listingImage('buranshi-4-5-nali-himalaya-view')},
   ],
   services: [
     {title:'Buying assistance',body:'We find land that matches what you actually want, walk it with you, and check the papers before any money moves.',cta:'Start with a WhatsApp message'},
@@ -83,7 +83,7 @@ export const content = {
   office: {
     descriptor: 'Real estate consultants & cottage builders',
     address: 'Kholachauri village, Devprayag–Pauri road, Pauri Garhwal, Uttarakhand 246001',
-    phones: ['98112 19788', '99905 15322'], emails: ['s.resham@yahoo.co.in', '17aryan.resham@gmail.com'],
+    phones: ['98112 19788', '99905 15322'], phoneNames: ['Resham Singh', 'Subash Negi'], emails: ['s.resham@yahoo.co.in', '17aryan.resham@gmail.com'],
     replyNote: 'Email replies within 24–48 hours. WhatsApp is faster.', hours: 'Calls 10am – 6pm',
     coverage: 'We work the Devprayag–Pauri belt closely, and take selected land in the Dehradun valley.',
     mapUrl: 'https://maps.app.goo.gl/Egv4DGhV66Dg65o68',

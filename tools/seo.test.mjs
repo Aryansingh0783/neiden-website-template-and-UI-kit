@@ -8,6 +8,7 @@ const root=path.join(path.dirname(fileURLToPath(import.meta.url)),'..'),dist=pat
 const build=env=>execFileSync('node',['tools/build.mjs'],{cwd:root,env:{...process.env,...env},stdio:'pipe'});
 const walk=(d,out=[])=>{for(const f of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,f.name);f.isDirectory()?walk(p,out):out.push(p);}return out;};
 const pages=()=>walk(dist).filter(f=>f.endsWith('index.html')||f.endsWith('404.html')).filter(f=>!f.includes(`${path.sep}effects${path.sep}`));
+const NOINDEX=['/thank-you/'];
 const route=f=>'/'+path.relative(dist,f).replace(/index\.html$/,'').replace(/\\/g,'/');
 const ld=h=>[...h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
 
@@ -20,10 +21,10 @@ test('production build is indexable, with a sitemap, and 404 stays noindex',()=>
  build({SEO_INDEX:'1'});
  const robots=fs.readFileSync(path.join(dist,'robots.txt'),'utf8');assert.match(robots,/Sitemap: https:\/\/devbhoomirealtors\.com\/sitemap\.xml/);assert.ok(!/Disallow: \//.test(robots));
  for(const f of pages()){const h=fs.readFileSync(f,'utf8'),is404=f.endsWith('404.html');
-  assert.equal(/content="index,follow/.test(h),!is404,f);}
+  assert.equal(/content="index,follow/.test(h),!is404&&!NOINDEX.includes(route(f)),f);}
  const map=fs.readFileSync(path.join(dist,'sitemap.xml'),'utf8');
  const locs=[...map.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
- assert.equal(locs.length,pages().length-1);assert.equal(new Set(locs).size,locs.length);
+ assert.equal(locs.length,pages().length-1-NOINDEX.length);assert.equal(new Set(locs).size,locs.length);
  for(const l of locs)assert.ok(fs.existsSync(path.join(dist,new URL(l).pathname,'index.html')),l);
 });
 test('every page has one h1, a unique title, a description, a self canonical and valid JSON-LD',()=>{

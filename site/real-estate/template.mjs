@@ -1,5 +1,5 @@
 import { content as defaultContent, properties as defaultProperties } from './content.mjs';
-import { escape, action, footer, propertyCard, renderPage, shell } from './components.mjs';
+import { escape, action, footer, propertyCard, renderPage, shell, routeList } from './components.mjs';
 import { seo } from './seo-data.mjs';
 import { normalPath, selectProperties, convertArea, buildEnquiry, whatsappURL } from './model.mjs';
 import { mountMotion } from '../effects/motion-kit.mjs';
@@ -26,7 +26,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  const previousRestoration=history.scrollRestoration;
  if(!onNavigate){history.scrollRestoration='manual';history.replaceState({...history.state,estateKey:key},'');}
  const localPath=url=>normalPath(url.pathname.slice(basePath.replace(/\/$/,'').length));
- const known=url=>{const p=localPath(url);return p==='/'||allNav.some(n=>normalPath(n.href)===p)||p==='/privacy/'||properties.some(x=>p===`/properties/${x.slug}/`);};
+ const known=url=>routeList(content,properties).some(r=>r===localPath(url));
  function closeMenu(){if(!menu.open)return;menu.close();menuButton.setAttribute('aria-expanded','false');document.body.style.overflow=oldOverflow;effects?.scroller?.start();effects?.setOverlayOpen(false);}
  function videoPreference(){for(const video of page.querySelectorAll('video')){if(reducedMotion())video.pause();else video.play().catch(()=>{});}}
  function draw(url){

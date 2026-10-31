@@ -16,7 +16,7 @@ export const content = {
     eyebrow: 'Rishikesh, Devprayag, Kholachauri, Pauri', heading: 'land.', handwritten: 'worth seeing in person.',
     description: 'Plots and cottages on the Rishikesh, Devprayag and Pauri road.',
     image: media('hero-poster.jpg'), video: media('hero.mp4'), side: 'Office on the Devprayag–Pauri road',
-    cta: 'WhatsApp us', ctaSecondary: 'See available land',
+    cta: 'Get in touch with us', ctaSecondary: 'See available land',
   },
   navigation: [{label:'Properties',href:'/properties/'},{label:'Areas',href:'/areas/'},{label:'Cottages',href:'/cottages/'},{label:'Contact',href:'/contact/'}],
   secondaryNavigation: [{label:'About',href:'/about/'},{label:'Services',href:'/services/'},{label:'From outside the state',href:'/guide/'},{label:'What is my land worth?',href:'/land-valuation/'},{label:'What buyers say',href:'/testimonials/'},{label:'Updates',href:'/updates/'},{label:'Refer a friend',href:'/referral/'}],
@@ -32,7 +32,7 @@ export const content = {
     {value:'Kholachauri', label:'Based in', note:'office on the Devprayag–Pauri road'},
     {value:'Documents checked', label:'', note:'before money moves, on every deal'},
   ],
-  available: { label: 'Available now', heading: 'Land on our books right now.', detail: 'Land currently on our books across the belt.', featured: ['sitton-khola-5-5-nali','kandogal-rishikesh-275-gaj','near-devprayag-railway-station'] },
+  available: { label: 'Available now', heading: 'Land on our books right now.', detail: 'Land currently on our books across the belt.', featured: ['sitton-khola-5-5-nali','kandogal-rishikesh-275-gaj','khirsu-village-land'] },
   belt: { label: 'The belt', heading: 'The Devprayag–Pauri belt.', body: 'Roughly 135 km of road that climbs from Rishikesh at 340 m, through the river confluence at Devprayag, to a ridge town at 2,000 m. That climb is the whole story of this belt: it decides your view, your water, your winter, and your price.' },
   areas: [
     {id:'dehradun',href:'/properties/kandogal-rishikesh-275-gaj/',name:'Rishikesh & the valley',line:'The bottom of the road, where the hills meet the plains. Flat, plotted land, and the coming Devprayag railway station puts this end within reach.',image:listingImage('kandogal-rishikesh-275-gaj')},

@@ -29,12 +29,20 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  const known=url=>routeList(content,properties).some(r=>r===localPath(url));
  function closeMenu(){if(!menu.open)return;menu.close();menuButton.setAttribute('aria-expanded','false');document.body.style.overflow=oldOverflow;effects?.scroller?.start();effects?.setOverlayOpen(false);}
  function videoPreference(){for(const video of page.querySelectorAll('video')){if(reducedMotion())video.pause();else video.play().catch(()=>{});}}
+ function initCounters(){
+   const els=[...page.querySelectorAll('[data-count]')];
+   if(!els.length||reducedMotion()||!('IntersectionObserver' in window))return;
+   const run=el=>{const end=Number(el.dataset.count),suffix=el.dataset.suffix||'',t0=performance.now(),dur=1500;
+     const step=now=>{const k=Math.min(1,(now-t0)/dur);el.textContent=Math.round(end*(1-Math.pow(1-k,3)))+suffix;if(k<1&&!destroyed)requestAnimationFrame(step);};requestAnimationFrame(step);};
+   const io=new IntersectionObserver(entries=>{for(const en of entries)if(en.isIntersecting){io.unobserve(en.target);run(en.target);}},{threshold:.6});
+   for(const el of els){el.textContent='0'+(el.dataset.suffix||'');io.observe(el);}
+ }
  function draw(url){
    activeURL=new URL(url,location.href);const path=localPath(activeURL);
    const result=renderPage(path,activeURL.search,content,properties,href);
    page.innerHTML=result.html;page.dataset.route=path;document.title=seo[path]?.title||(result.title===content.title?content.title:`${result.title} · ${content.brand}`);
    for(const a of root.querySelectorAll('header nav a')){if(normalPath(new URL(a.href).pathname)===normalPath(activeURL.pathname))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}
-   videoPreference();effects?.refresh();effects?.scroller?.resize();
+   videoPreference();initCounters();effects?.refresh();effects?.scroller?.resize();
  }
  async function navigate(target,{pop=false}={}){
    const url=new URL(target,location.href);
@@ -108,7 +116,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  if(prerendered&&prerendered.dataset.route===localPath(activeURL)&&!activeURL.search){
    delete page.dataset.prerendered;
    for(const a of root.querySelectorAll('header nav a')){if(normalPath(new URL(a.href).pathname)===normalPath(activeURL.pathname))a.setAttribute('aria-current','page');}
-   videoPreference();effects?.refresh();effects?.scroller?.resize();
+   videoPreference();initCounters();effects?.refresh();effects?.scroller?.resize();
  }else draw(location.href);
  return {navigate,render:draw,closeMenu,effects,content,properties,destroy(){destroyed=true;closeMenu();signal.abort();effects?.destroy();if(!onNavigate)history.scrollRestoration=previousRestoration;root.innerHTML='';root.classList.remove('estate-app');delete root.dataset.estateMounted;}};
 }

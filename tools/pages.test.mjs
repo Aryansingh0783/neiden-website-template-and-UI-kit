@@ -50,3 +50,11 @@ test('referral keeps its three tiers and rules; cottages keep price range and ga
 test('the old template wording is gone from every page',()=>{
  for(const r of routeList(content,properties)){const h=render(r).html;assert.ok(!/preview|template|sample|demonstration|acre\./i.test(h.replace(/<(script|style)[\s\S]*?<\/\1>/g,'').replace(/file:\/\/\S+/g,'').replace(/Local preview\./,'')),`${r}: ${(h.match(/.{25}(preview|template|sample|demonstration|acre\.).{25}/i)||[])[0]}`);}
 });
+test('home: hero button says Get in touch, featured plots are the owner-chosen ones, number stats can count up',()=>{
+ const h=render('/').html;
+ assert.match(h,/Get in touch with us/);assert.ok(!/estate-hero-actions[\s\S]{0,300}WhatsApp us/.test(h));
+ assert.deepEqual(content.available.featured,['sitton-khola-5-5-nali','kandogal-rishikesh-275-gaj','khirsu-village-land']);
+ assert.ok(!h.includes('/properties/near-devprayag-railway-station/'));
+ assert.equal((h.match(/data-count="(25|10)" data-suffix="\+"/g)||[]).length,2);
+ assert.ok(h.includes('<span class="estate-sr">25+</span>')&&h.includes('<span class="estate-sr">10+</span>'));
+});

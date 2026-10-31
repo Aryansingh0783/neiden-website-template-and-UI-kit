@@ -57,7 +57,8 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 - Fixed a grey band under the home hero (the over-scaled hero image spilled below the hero).
 - Forms (contact, land valuation, referral) still only prepare a draft or open WhatsApp; the real enquiry flow is phase 4. The referral page opens WhatsApp with a generic referral message until the form is built.
 - `/thank-you/` is `noindex` and left out of the sitemap, as on the live site.
-- Tests: 32 pass (`npm test`), including `tools/pages.test.mjs`.
+- Owner feedback applied: hero button reads "Get in touch with us"; the "25+" and "10+" stats count up when scrolled into view (static text without JavaScript or with reduced motion); the featured plots on the home page are Sitton Khola, Kandogal and Khirsu village (the railway station plot was removed from that row).
+- Tests: 33 pass (`npm test`), including `tools/pages.test.mjs`.
 
 ## SEO build (owner's rule: build every page with search in mind)
 

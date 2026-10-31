@@ -22,8 +22,8 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 |---|---|---|---|
 | 1 | Foundation and Home | Devbhoomi brand, header, footer, real home page, all 20 real listings loaded | **Approved by owner** |
 | 2 | Listings | Property list with filters and sorting, full detail pages with photos, videos, highlights, WhatsApp per plot | **Approved by owner** |
-| 3 | The other pages | Areas (with their own pages), Cottages, Services, About, Guide, Testimonials (6 real), Updates, Referral, legal pages | **Built, waiting for approval** |
-| 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | Not started |
+| 3 | The other pages | Areas (with their own pages), Cottages, Services, About, Guide, Testimonials (6 real), Updates, Referral, legal pages | **Approved by owner** |
+| 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | **Built, waiting for approval** |
 | 5 | Design pass | `impeccable` critique and polish across every page, `unslop` over all wording, image and video optimisation, accessibility and performance audit | Not started |
 | 6 | Assistant rebuild | New assistant on a free AI API behind a Vercel function (the key never reaches the browser), answers grounded in the listing data, refuses invented prices and advice | Not started |
 | 7 | Search readiness | Foundation built in phase 2 (see "SEO build"). Phase 7 is the final SEO audit: content depth per page, internal linking, image weight, Core Web Vitals, redirect map from every old URL | Foundation done, audit later |
@@ -59,6 +59,15 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 - `/thank-you/` is `noindex` and left out of the sitemap, as on the live site.
 - Owner feedback applied: hero button reads "Get in touch with us"; the "25+" and "10+" stats count up when scrolled into view (static text without JavaScript or with reduced motion); the featured plots on the home page are Sitton Khola, Kandogal and Khirsu village (the railway station plot was removed from that row).
 - Tests: 33 pass (`npm test`), including `tools/pages.test.mjs`.
+
+## Phase 4 record
+
+- Three forms, with the live site's own fields and wording: **What is your land worth** (name, phone, village, size in nali or sq ft, type, road access, document status, price, notes), **Refer a friend** (you, your friend, when they could visit) and a **contact message** form (name, phone, interested in, area, budget, message; names the plot when it is opened from a plot page).
+- Every form checks the phone number as an Indian mobile (10 digits starting 6 to 9), shows a live preview of the exact WhatsApp message, has a hidden honeypot field, and on submit opens WhatsApp with the message filled in and goes to `/thank-you/`. The size line carries both nali and sq ft.
+- Only the valuation form also posts to `/api/enquiries`, as on the live site. The referral and contact forms are WhatsApp only (the live backend has no column for them).
+- `api/enquiries.js` is a Vercel function ported from the live Worker (same fields, length limits, honeypot, 5 per 10 minutes rate limit, email after the save). **It does nothing until `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set on the Vercel project, and the staging project must not get the live keys** (answers 503 and the form carries on with WhatsApp). Use a separate test database if the owner wants to try storage before launch. Go-live step: set the live variables on the production project (`RESEND_API_KEY`, `RESEND_FROM`, `OFFICE_EMAIL` as well, and run `supabase/enquiries.sql` from the live repo).
+- Mobile bottom bar (WhatsApp and Call) on every page, and a lazy-loaded Google map on the contact page (the live site's embed).
+- Tests: 43 pass, including `tools/forms.test.mjs` (form fields, phone check, message text, and the API with a fake database).
 
 ## SEO build (owner's rule: build every page with search in mind)
 

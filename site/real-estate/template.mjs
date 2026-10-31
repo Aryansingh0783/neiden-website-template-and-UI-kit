@@ -1,7 +1,7 @@
 import { content as defaultContent, properties as defaultProperties } from './content.mjs';
 import { escape, action, footer, propertyCard, renderPage, shell, routeList } from './components.mjs';
 import { seo } from './seo-data.mjs';
-import { normalPath, selectProperties, convertArea, buildEnquiry, whatsappURL } from './model.mjs';
+import { normalPath, selectProperties, convertArea, whatsappURL, validPhone, sizeBoth, composeWhatsApp } from './model.mjs';
 import { mountMotion } from '../effects/motion-kit.mjs';
 import { reducedMotion } from '../effects/motion-config.mjs';
 
@@ -29,6 +29,46 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  const known=url=>routeList(content,properties).some(r=>r===localPath(url));
  function closeMenu(){if(!menu.open)return;menu.close();menuButton.setAttribute('aria-expanded','false');document.body.style.overflow=oldOverflow;effects?.scroller?.start();effects?.setOverlayOpen(false);}
  function videoPreference(){for(const video of page.querySelectorAll('video')){if(reducedMotion())video.pause();else video.play().catch(()=>{});}}
+ function formMessage(form){
+   const rows=[];
+   for(const el of form.querySelectorAll('[data-label]')){
+     if(el.hasAttribute('data-skip'))continue;
+     let v=el.value?el.value.trim():'';if(!v)continue;
+     if(el.tagName==='SELECT')v=el.options[el.selectedIndex].text;
+     if(el.name==='size')v=sizeBoth(v,form.querySelector('[name="unit"]')?.value,{nali:Number(form.dataset.nali)});
+     rows.push({label:el.dataset.label,value:v});
+   }
+   return composeWhatsApp(form.dataset.waIntro,rows);
+ }
+ function paintPreview(form){
+   const box=form.querySelector('[data-wa-preview]');if(!box)return;
+   const msg=formMessage(form);box.replaceChildren();if(!msg)return;
+   const label=document.createElement('p');label.className='estate-wa-preview-label';label.textContent='This is the message that will be sent';
+   const body=document.createElement('p');body.className='estate-wa-preview-body';body.textContent=msg;box.append(label,body);
+ }
+ function validateForm(form,only){
+   let first=null;
+   for(const el of form.querySelectorAll('[required]')){
+     if(only&&el!==only)continue;
+     const bad=!el.value.trim()||(el.type==='tel'&&!validPhone(el.value)),wrap=el.closest('.estate-field'),err=wrap?.querySelector('[data-err]');
+     wrap?.classList.toggle('is-invalid',bad);if(err)err.hidden=!bad;el.setAttribute('aria-invalid',String(bad));
+     if(bad&&!first)first=el;
+   }
+   if(!only)first?.focus();return !first;
+ }
+ /** Fire-and-forget copy of the lead to our own server, so it is kept even if the visitor never sends the WhatsApp message. Never blocks the hand-off. */
+ function captureEnquiry(form){
+   try{
+     const p={source:form.dataset.source,website:''};
+     for(const el of form.querySelectorAll('[name]')){if(el.name!=='website')p[el.name]=el.value;}
+     if(p.type&&!p.property_type)p.property_type=p.type;
+     if(p.size&&p.unit)p.size=`${p.size} ${p.unit}`;
+     p.lang='en';
+     const body=JSON.stringify(p);
+     if(navigator.sendBeacon)navigator.sendBeacon('/api/enquiries',new Blob([body],{type:'application/json'}));
+     else fetch('/api/enquiries',{method:'POST',headers:{'Content-Type':'application/json'},body,keepalive:true}).catch(()=>{});
+   }catch{}
+ }
  function initCounters(){
    const els=[...page.querySelectorAll('[data-count]')];
    if(!els.length||reducedMotion()||!('IntersectionObserver' in window))return;
@@ -42,7 +82,7 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
    const result=renderPage(path,activeURL.search,content,properties,href);
    page.innerHTML=result.html;page.dataset.route=path;document.title=seo[path]?.title||(result.title===content.title?content.title:`${result.title} · ${content.brand}`);
    for(const a of root.querySelectorAll('header nav a')){if(normalPath(new URL(a.href).pathname)===normalPath(activeURL.pathname))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}
-   videoPreference();initCounters();effects?.refresh();effects?.scroller?.resize();
+   videoPreference();initCounters();for(const f of page.querySelectorAll('[data-estate-form]'))paintPreview(f);effects?.refresh();effects?.scroller?.resize();
  }
  async function navigate(target,{pop=false}={}){
    const url=new URL(target,location.href);
@@ -103,20 +143,24 @@ export function mountRealEstate({root,content=defaultContent,properties=defaultP
  });
  listen(root,'submit',async event=>{
    if(event.target.matches('[data-property-filters]')){event.preventDefault();applyFilters();return;}
-   if(!event.target.matches('[data-enquiry]'))return;
-   event.preventDefault();const form=event.target,fields=Object.fromEntries(new FormData(form));const property=properties.find(p=>p.id===fields.property_id);const message=buildEnquiry(fields,property),feedback=form.querySelector('[data-enquiry-feedback]');
-   if(onEnquiry){const button=form.querySelector('button[type=submit]');button.disabled=true;try{const result=await onEnquiry({fields,property,message});feedback.textContent=result?.message||'Your enquiry is ready.';}catch{feedback.textContent='The enquiry could not be completed. Please try again.';}finally{button.disabled=false;}return;}
-   feedback.innerHTML='<h3>Your draft is ready.</h3><p>Nothing has been sent. You can select and copy this text.</p><textarea aria-label="Enquiry draft" rows="10" readonly></textarea>';
-   feedback.querySelector('textarea').value=message;
-   if(content.contact.whatsappNumber){try{const a=document.createElement('a');a.className='estate-text-link';a.textContent='Open draft in WhatsApp ↗';a.href=whatsappURL(content.contact.whatsappNumber,message);a.target='_blank';a.rel='noopener';feedback.append(a);}catch{const note=document.createElement('p');note.className='estate-small';note.textContent='The WhatsApp number is not configured correctly, so no WhatsApp link was added. Copy the draft above instead.';feedback.append(note);}}
-   effects?.scroller?.resize();
+   const form=event.target.closest?.('[data-estate-form]');if(!form)return;
+   event.preventDefault();
+   const hp=form.querySelector('[name="website"]');if(hp&&hp.value)return;
+   if(!validateForm(form))return;
+   const message=formMessage(form),status=form.querySelector('[data-form-status]');
+   if(onEnquiry){const button=form.querySelector('button[type=submit]');button.disabled=true;try{const fields=Object.fromEntries(new FormData(form));const result=await onEnquiry({form:form.dataset.estateForm,fields,message,source:form.dataset.source});status.textContent=result?.message||'Your enquiry is ready.';}catch{status.textContent='The enquiry could not be completed. Please try again.';}finally{button.disabled=false;}return;}
+   if(form.dataset.post==='true')captureEnquiry(form);
+   try{window.open(whatsappURL(form.dataset.waNumber,message),'_blank','noopener');}catch{status.textContent='The WhatsApp number is not set up correctly. Please call the office instead.';return;}
+   navigate(form.dataset.thankyou);
  });
+ listen(root,'input',event=>{const form=event.target.closest?.('[data-estate-form]');if(form){paintPreview(form);const wrap=event.target.closest('.estate-field');if(wrap?.classList.contains('is-invalid'))validateForm(form,event.target);}});
+ listen(root,'change',event=>{const form=event.target.closest?.('[data-estate-form]');if(form)paintPreview(form);});
  if(!onNavigate)listen(window,'popstate',()=>navigate(location.href,{pop:true}));
  const media=matchMedia('(prefers-reduced-motion: reduce)');listen(media,'change',videoPreference);
  if(prerendered&&prerendered.dataset.route===localPath(activeURL)&&!activeURL.search){
    delete page.dataset.prerendered;
    for(const a of root.querySelectorAll('header nav a')){if(normalPath(new URL(a.href).pathname)===normalPath(activeURL.pathname))a.setAttribute('aria-current','page');}
-   videoPreference();initCounters();effects?.refresh();effects?.scroller?.resize();
+   videoPreference();initCounters();for(const f of page.querySelectorAll('[data-estate-form]'))paintPreview(f);effects?.refresh();effects?.scroller?.resize();
  }else draw(location.href);
  return {navigate,render:draw,closeMenu,effects,content,properties,destroy(){destroyed=true;closeMenu();signal.abort();effects?.destroy();if(!onNavigate)history.scrollRestoration=previousRestoration;root.innerHTML='';root.classList.remove('estate-app');delete root.dataset.estateMounted;}};
 }

@@ -48,7 +48,7 @@ test('referral keeps its three tiers and rules; cottages keep price range and ga
  const c=render('/cottages/').html;assert.match(c,/₹1,800–3,500/);assert.equal((c.match(/<figure>/g)||[]).length,6);
 });
 test('the old template wording is gone from every page',()=>{
- for(const r of routeList(content,properties)){const h=render(r).html;assert.ok(!/preview|template|sample|demonstration|acre\./i.test(h.replace(/<(script|style)[\s\S]*?<\/\1>/g,'').replace(/file:\/\/\S+/g,'').replace(/Local preview\./,'')),`${r}: ${(h.match(/.{25}(preview|template|sample|demonstration|acre\.).{25}/i)||[])[0]}`);}
+ for(const r of routeList(content,properties)){const h=render(r).html;assert.ok(!/preview|template|sample|demonstration|acre\./i.test(h.replace(/<(script|style)[\s\S]*?<\/\1>/g,'').replace(/<[^>]+>/g,' ').replace(/file:\/\/\S+/g,'')),`${r}: ${(h.match(/.{25}(preview|template|sample|demonstration|acre\.).{25}/i)||[])[0]}`);}
 });
 test('home: hero button says Get in touch, featured plots are the owner-chosen ones, number stats can count up',()=>{
  const h=render('/').html;

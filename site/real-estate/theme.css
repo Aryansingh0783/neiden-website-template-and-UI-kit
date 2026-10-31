@@ -333,3 +333,34 @@ h3.estate-article-heading{font-size:clamp(22px,2.2vw,32px)}
 .estate-article-intro .estate-figure{max-width:520px}.estate-article-intro .estate-figure img{max-height:none;object-fit:contain}
 .estate-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .estate-stat-value [data-count]{font-variant-numeric:tabular-nums}
+
+/* Devbhoomi conversion, phase 4: forms, contact bar, map */
+.estate-form{display:grid;gap:30px}
+.estate-form .estate-form-grid{grid-template-columns:1fr;gap:34px}
+.estate-fieldset{border:0;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:26px 30px;min-width:0}
+.estate-fieldset legend{grid-column:1/-1;padding:0;margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#656561}
+.estate-field.estate-wide{grid-column:1/-1}
+.estate-field>span:first-child{display:block}
+.estate-opt{font-style:normal;text-transform:none;color:#656561}
+.estate-field-err{color:#b3261e;text-transform:none;letter-spacing:0;font-size:12px}
+.estate-field.is-invalid input,.estate-field.is-invalid select,.estate-field.is-invalid textarea{border-bottom-color:#b3261e}
+.estate-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.estate-form-about{margin:0;font-size:14px;border:1px solid var(--estate-line);padding:12px 16px}
+.estate-form-about span{font-size:11px;text-transform:uppercase;color:#656561;margin-right:8px}
+.estate-wa-preview:not(:empty){border:1px solid var(--estate-line);background:#efefec;padding:18px 20px;display:grid;gap:10px}
+.estate-wa-preview-label{margin:0;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#656561}
+.estate-wa-preview-body{margin:0;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.estate-form .estate-action{margin-top:0;width:100%;background:transparent}
+.estate-form .estate-small a{text-decoration:underline;text-underline-offset:3px}
+.estate-form [data-form-status]:not(:empty){font-size:14px;color:#b3261e}
+.estate-enquiry--inline{display:block;padding:0}
+.estate-map{padding-top:0;padding-bottom:0;border-bottom:1px solid var(--estate-line)}
+.estate-map iframe{display:block;width:100%;height:min(460px,60vh);border:0;filter:grayscale(.35)}
+.estate-actionbar{display:none}
+@media(max-width:809px){
+ .estate-fieldset{grid-template-columns:1fr}
+ .estate-actionbar{display:grid;grid-template-columns:1fr 1fr;position:fixed;left:0;right:0;bottom:0;z-index:40;border-top:1px solid var(--estate-line);background:#f6f6f3f2;backdrop-filter:blur(8px);padding-bottom:env(safe-area-inset-bottom)}
+ .estate-actionbar a{color:#090909;display:flex;align-items:center;justify-content:center;min-height:52px;font-size:12px;text-transform:uppercase;letter-spacing:.03em;text-decoration:none}
+ .estate-actionbar .estate-ab-wa{background:#090909;color:#fff}.estate-actionbar a:visited{color:#090909}.estate-actionbar .estate-ab-wa:visited{color:#fff}
+ .estate-footer-wrap{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+}

@@ -1,3 +1,5 @@
+> **Current state: the template is being converted into the Devbhoomi Realtors site. Read `docs/CONVERSION-PHASES.md` first.** Everything below is the original handoff for the neutral template and is out of date where it says the content is demo content.
+
 # Paste this into Claude with the extracted folder attached/open
 
 You are working on the supplied Neiden-style real estate frontend. Start by reading `README.md`, `docs/DEVBHOOMI-INTEGRATION.md`, `docs/EFFECT-SOURCE-MAP.md` and `docs/QA.md`.

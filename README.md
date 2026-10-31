@@ -1,6 +1,6 @@
 # Neiden-style real estate template
 
-A complete local frontend tailored for a later **Devbhoomi Realtors** integration. The visual direction follows Neiden: oversized type, a handwritten accent, quiet grid lines, smooth navigation, progressive blur and restrained reveals. The business structure is built around land, local areas, cottages and buyer/seller enquiries.
+The **Devbhoomi Realtors** website, being built phase by phase on a Neiden-style template (oversized type, a handwritten accent, quiet grid lines, smooth navigation, progressive blur). English only, no dark mode. Listings and copy come from the live Devbhoomi site, imported by `tools/import-devbhoomi.mjs`. See `docs/CONVERSION-PHASES.md` for the plan and the current phase.
 
 This package is a standalone authored template. It does not need Framer, React, npm dependencies, API keys or an account. The original Nordå reproduction remains in the separately delivered `NORDA-CLONE-FULL-PACKAGE.zip`.
 

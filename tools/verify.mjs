@@ -7,7 +7,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),error
 const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(x=>x.isDirectory()?walk(path.join(dir,x.name)):[path.join(dir,x.name)]);
 const files=walk(path.join(root,'site'));let modules=0;
 for(const file of files.filter(x=>x.endsWith('.mjs'))){modules++;const result=spawnSync(process.execPath,['--check',file],{encoding:'utf8'});if(result.status!==0)errors.push(result.stderr);}
-for(const image of new Set([content.hero.image,content.cottageImage,...properties.map(p=>p.image)]))if(!fs.existsSync(fileURLToPath(image)))errors.push(`Missing image: ${image}`);
+for(const image of new Set([content.hero.image,content.hero.video,content.cottageImage,content.founder.image,...properties.flatMap(p=>[p.image,...p.images,...p.videos,p.poster])].filter(Boolean)))if(!fs.existsSync(fileURLToPath(image)))errors.push(`Missing media: ${image}`);
 const routes=['/','/properties/','/areas/','/cottages/','/services/','/about/','/guide/','/contact/','/land-valuation/','/privacy/',...properties.map(p=>`/properties/${p.slug}/`)];
 const server=spawn(process.execPath,['server.mjs'],{cwd:root,env:{...process.env,PORT:'4175'},windowsHide:true,stdio:['ignore','pipe','pipe']});
 const results=[];

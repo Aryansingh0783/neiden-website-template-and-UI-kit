@@ -42,5 +42,52 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/hi/properties/khandusain-4-5-nali-himalaya-view",
+      "destination": "/properties/buranshi-4-5-nali-himalaya-view/",
+      "permanent": true
+    },
+    {
+      "source": "/properties/khandusain-4-5-nali-himalaya-view",
+      "destination": "/properties/buranshi-4-5-nali-himalaya-view/",
+      "permanent": true
+    },
+    {
+      "source": "/hi/properties/buranshi-village-kot-block",
+      "destination": "/properties/khandusain-2-5-nali-branch-road/",
+      "permanent": true
+    },
+    {
+      "source": "/properties/buranshi-village-kot-block",
+      "destination": "/properties/khandusain-2-5-nali-branch-road/",
+      "permanent": true
+    },
+    {
+      "source": "/hi",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/hi/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*/index.html",
+      "destination": "/:path*/",
+      "permanent": true
+    },
+    {
+      "source": "/query.html",
+      "destination": "/contact/",
+      "permanent": true
+    }
   ]
 }

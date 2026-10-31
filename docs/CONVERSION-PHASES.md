@@ -25,8 +25,8 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 | 3 | The other pages | Areas (with their own pages), Cottages, Services, About, Guide, Testimonials (6 real), Updates, Referral, legal pages | **Approved by owner** |
 | 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | **Approved by owner** |
 | 5 | Design pass | `impeccable` critique and polish across every page, `unslop` over all wording, image and video optimisation, accessibility and performance audit | **Approved by owner** |
-| 6 | Assistant rebuild | New assistant on a free AI API behind a Vercel function (the key never reaches the browser), answers grounded in the listing data, refuses invented prices and advice | **Built, waiting for approval. Needs an API key to go live** |
-| 7 | Search readiness | Foundation built in phase 2 (see "SEO build"). Phase 7 is the final SEO audit: content depth per page, internal linking, image weight, Core Web Vitals, redirect map from every old URL | Foundation done, audit later |
+| 6 | Assistant rebuild | New assistant on a free AI API behind a Vercel function (the key never reaches the browser), answers grounded in the listing data, refuses invented prices and advice | **Approved by owner. Needs an API key to go live** |
+| 7 | Search readiness | Foundation built in phase 2 (see "SEO build"). Phase 7 is the final SEO audit: content depth per page, internal linking, image weight, Core Web Vitals, redirect map from every old URL | **Built, waiting for approval** |
 | 8 | Full audit and client demo | Automated crawl, accessibility, speed, link checks, a checklist for the client review | Not started |
 | 9 | Go live (only after client approval) | Replace the live site, keep every old URL working or redirect it, keep the enquiry backend and Search Console clean | Not started |
 
@@ -90,6 +90,16 @@ Audit tools: the `impeccable` detector (rendered pages at 1440 and 390 wide), `a
 - **Without a key** the endpoint answers 503 and the panel says it is not switched on and shows WhatsApp and the phone number. The preview behaves this way until a key is set.
 - **To switch it on** (owner action, about two minutes): create a free key with a provider, then in Vercel go to Project Settings, Environment Variables and add `AI_API_KEY`. Optional: `AI_BASE_URL` and `AI_MODEL`. Defaults are Groq (`https://api.groq.com/openai/v1`, model `llama-3.3-70b-versatile`). Other free OpenAI-compatible choices: Google AI Studio (`https://generativelanguage.googleapis.com/v1beta/openai`, model `gemini-2.0-flash`) or OpenRouter (`https://openrouter.ai/api/v1` with a `:free` model). Redeploy after adding variables. Free tiers have daily limits and the provider's terms apply to the questions visitors type.
 - **Tests:** 52 pass, including `tools/assistant.test.mjs` (no key means no call, the facts cover every plot, the prompt rules, trimmed history, an invented price is replaced, bad requests, rate limit, no key in browser code). Checked in a browser with a mocked server: open, ask, link, error state, Escape, desktop and mobile. axe reports 0 violations with the panel on every page. The live answers have not been tried against a real model, because there is no key yet.
+
+## Phase 7 record: search readiness
+
+- **URL map:** the live sitemap has 76 addresses. All 38 English ones exist unchanged here (plus `/thank-you/`, which is `noindex`). The 38 Hindi ones redirect permanently to their English twins. `vercel.json` also carries the live site's other redirects (`/index.html`, `/x/index.html`, `/query.html`, the two renamed plots). `tools/seo.test.mjs` proves every Hindi address lands on a real page. `/an` and `/stats/` are not part of this site; see `docs/GO-LIVE.md`.
+- **Descriptions:** the nine short live descriptions (76 to 109 characters) were lengthened from each page's own text, and any that ended mid-sentence now end cleanly. All pages are 90 to 165 characters, unique, and tested.
+- **Sitemap:** dates are the latest commit date, so Google sees a change only when the site changes.
+- **Crawl depth:** every page is reachable from the home page in two clicks or fewer, none is an orphan (tested). The 404 page returns a real 404 status, unknown paths are not rewritten to the home page, trailing-slash addresses are canonical.
+- **Structured data, titles, canonicals, `noindex` on staging:** unchanged from the phase 2 build and covered by the same tests.
+- **Still manual:** the go-live steps in `docs/GO-LIVE.md`, and Search Console work after launch.
+- Tests: 56 pass.
 
 ## SEO build (owner's rule: build every page with search in mind)
 

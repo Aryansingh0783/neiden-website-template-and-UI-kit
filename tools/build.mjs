@@ -10,6 +10,7 @@
  *   SEO_INDEX=1 allow indexing. Without it every page is noindex and robots.txt blocks all crawlers (staging).
  */
 import fs from 'node:fs';
+import { execSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { content, properties, business } from '../site/real-estate/content.mjs';
@@ -23,6 +24,24 @@ const siteDir = path.join(root, 'site'), dist = path.join(root, 'dist');
 const SITE = (process.env.SITE_URL || 'https://devbhoomirealtors.com').replace(/\/$/, '');
 const INDEX = process.env.SEO_INDEX === '1';
 const today = new Date().toISOString().slice(0, 10);
+// lastmod is the date of the latest commit, so it only changes when the site does.
+const lastmod = (() => { try { return execSync('git log -1 --format=%cs', { cwd: root, encoding: 'utf8' }).trim() || today; } catch { return today; } })();
+const sentenceCut = (t, n) => { const clean = t.replace(/\s+/g, ' ').trim(); if (clean.length <= n) return clean; const cut = clean.slice(0, n - 1); const dot = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('.')); return dot >= 90 ? cut.slice(0, dot + 1) : `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:\u2013-]+$/, '')}\u2026`; };
+/** Short live descriptions are lengthened from the page's own text. Nothing is written that the page does not already say. */
+function describe(route, meta) {
+  const live = (meta.description || '').trim();
+  const finish = t => (/[.!?\u2026]$/.test(t) ? t : `${t.replace(/[,;:\u2013-]+$/, '').trim()}\u2026`);
+  if (live.length >= 110) return finish(live);
+  const p = bySlug[route], pg = pages[route];
+  let text = live || (pg && pg.lead) || '';
+  if (p) text = p.summary;
+  else if (route === '/contact/') text = `${pg.lead} ${content.office.address}. ${content.office.coverage}`;
+  else if (pg) {
+    const longP = pg.blocks.find(b => b.t === 'p' && b.x.length >= 80);
+    for (const part of [pg.lead, longP && longP.x]) if (part && text.length < 110 && !text.includes(part.slice(0, 30))) text = `${text.replace(/[.\s]+$/, '')}. ${part}`;
+  }
+  return finish(sentenceCut(text.length > live.length ? text : live, 158)) || content.description;
+}
 const fileBase = pathToFileURL(siteDir).href;
 const href = p => normalPath(p).split('/').map(encodeURIComponent).join('/');
 const abs = p => SITE + (p.startsWith('/') ? p : '/' + p);
@@ -67,7 +86,7 @@ const faqLD = list => ({ '@context': 'https://schema.org', '@type': 'FAQPage', m
 function document_(route, result, { notFound = false } = {}) {
   const p = bySlug[route], meta = seo[route] || {};
   const title = meta.title || (route === '/' ? content.title : `${result.title} · ${content.brand}`);
-  const description = meta.description && meta.description.length >= 60 ? meta.description : (pages[route]?.lead && pages[route].lead.length >= 60 ? pages[route].lead : content.description);
+  const description = route === '/404/' ? content.description : describe(route, meta);
   const url = abs(route), image = abs(rel(p ? (p.poster || p.image) : content.hero.image));
   const index = INDEX && !notFound && !NOINDEX.has(route);
   const ld = [agent(url), crumbs(route), p ? product(p, route) : null, route.startsWith('/updates/') && route !== '/updates/' ? article(route) : null, (route === '/' || route === '/about/' || route === '/guide/') ? faqLD(content.faqs) : null].filter(Boolean);
@@ -102,6 +121,6 @@ for (const route of routes) {
   count++;
 }
 writeRoute('/404/', '404.html', document_('/404/', renderPage('/404/', '', content, properties, href), { notFound: true }));
-fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.filter(r => !NOINDEX.has(r)).map(r => `<url><loc>${abs(r)}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
+fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.filter(r => !NOINDEX.has(r)).map(r => `<url><loc>${abs(r)}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(path.join(dist, 'robots.txt'), INDEX ? `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n` : 'User-agent: *\nDisallow: /\n');
 console.log(`Built ${count} pages and 404.html into dist/ (${INDEX ? 'indexable' : 'noindex staging'}, canonical ${SITE}).`);

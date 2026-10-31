@@ -61,3 +61,45 @@ test('sold listings are marked SoldOut and unpriced ones carry no invented price
  const enq=ld(fs.readFileSync(path.join(dist,'properties/near-devprayag-railway-station/index.html'),'utf8')).find(j=>j['@type']==='Product');
  assert.ok(!enq.offers);
 });
+
+// ---- phase 7: redirects, crawl depth, descriptions
+import {content,properties} from '../site/real-estate/content.mjs';
+import {routeList} from '../site/real-estate/components.mjs';
+const vercel=JSON.parse(fs.readFileSync(path.join(root,'vercel.json'),'utf8'));
+/** Tiny matcher for the two Vercel patterns used here: an exact path, or a path with one trailing :path* */
+function redirect(url){
+ const clean=url.length>1?url.replace(/\/$/,''):url;
+ for(const r of vercel.redirects){
+  const star=r.source.includes(':path*');
+  if(!star){if(r.source===clean||r.source===url)return r.destination;continue;}
+  const [pre,post]=r.source.split(':path*');
+  if(clean.startsWith(pre)&&clean.endsWith(post)&&clean.length>=pre.length+post.length){
+   const mid=clean.slice(pre.length,clean.length-post.length).replace(/^\//,'').replace(/\/$/,'');
+   if(pre.endsWith('/')&&clean.length===pre.length-1)continue;
+   return r.destination.replace(':path*',mid).replace('//','/');
+  }
+ }
+ return null;
+}
+test('every old Hindi address and old file or renamed address redirects to a live English page',()=>{
+ const routes=new Set(routeList(content,properties));
+ for(const r of routes){if(r==='/')continue;const to=redirect(`/hi${r}`);assert.ok(to,`/hi${r} has no redirect`);assert.ok(routes.has(to.replace(/\/?$/,'/')),`/hi${r} -> ${to}`);}
+ assert.equal(redirect('/hi'),'/');assert.equal(redirect('/hi/'),'/');
+ assert.equal(redirect('/index.html'),'/');assert.equal(redirect('/about/index.html'),'/about/');assert.equal(redirect('/query.html'),'/contact/');
+ for(const old of ['khandusain-4-5-nali-himalaya-view','buranshi-village-kot-block']){for(const pre of ['','/hi']){const to=redirect(`${pre}/properties/${old}/`);assert.ok(to&&routes.has(to),`${pre}/properties/${old}/ -> ${to}`);}}
+ assert.ok(vercel.redirects.every(r=>r.permanent===true));
+});
+test('every page is reachable from the home page in two clicks or fewer, and none is an orphan',()=>{
+ build({SEO_INDEX:''});
+ const links=r=>[...new Set([...fs.readFileSync(path.join(dist,r==='/'?'index.html':`${r.slice(1)}index.html`),'utf8').matchAll(/<a [^>]*href="(\/[^"#?]*)"/g)].map(m=>m[1]).filter(h=>/\/$|^\/$/.test(h)))];
+ const depth={'/':0},queue=['/'];
+ while(queue.length){const r=queue.shift();for(const l of links(r)){if(!(l in depth)&&fs.existsSync(path.join(dist,l==='/'?'index.html':`${l.slice(1)}index.html`))){depth[l]=depth[r]+1;queue.push(l);}}}
+ for(const r of routeList(content,properties).map(x=>x.replace(/\/?$/,'/'))){if(r==='/thank-you/')continue;assert.ok(r in depth,`${r} is an orphan`);assert.ok(depth[r]<=2,`${r} is ${depth[r]} clicks deep`);}
+});
+test('descriptions are 90 to 165 characters and built only from the page',()=>{
+ for(const f of pages()){if(f.endsWith('404.html'))continue;const h=fs.readFileSync(f,'utf8'),d=h.match(/<meta name="description" content="([^"]*)"/)[1];assert.ok(d.length>=90&&d.length<=165,`${route(f)}: ${d.length} chars`);assert.match(d,/[.!?\u2026]$/,`${route(f)}: description ends mid-sentence`);}
+});
+test('sitemap dates are the latest commit date, not the build day',()=>{
+ build({SEO_INDEX:'1'});const m=fs.readFileSync(path.join(dist,'sitemap.xml'),'utf8').match(/<lastmod>([^<]+)<\/lastmod>/)[1];assert.match(m,/^\d{4}-\d{2}-\d{2}$/);
+ const git=execFileSync('git',['log','-1','--format=%cs'],{cwd:root,encoding:'utf8'}).trim();assert.equal(m,git);build({SEO_INDEX:''});
+});

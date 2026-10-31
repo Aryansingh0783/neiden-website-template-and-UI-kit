@@ -100,6 +100,6 @@ test('a number from another page is allowed, an invented one is not',()=>{
 });
 
 test('everyday questions are not mistaken for off-topic',()=>{
- for(const q of ['What is the cheapest plot?','Do you charge a commission?','is there a reward for referring','what do you do','who are you','Which plots are available right now?','How long does it take to build a cottage?','What are your office hours?','Can an NRI buy agricultural land here?','How is land measured here?','Is the Devprayag railway station real?','Tell me about Resham Singh'])
+ for(const q of ['What is the cheapest plot?','Do you charge a commission?','is there a reward for referring','what do you do','who are you','where are you?','How do I reach you?','Which plots are available right now?','How long does it take to build a cottage?','What are your office hours?','Can an NRI buy agricultural land here?','How is land measured here?','Is the Devprayag railway station real?','Tell me about Resham Singh'])
   assert.ok(retrieve(U(q)).relevant,q);
 });

@@ -98,6 +98,7 @@ export const MIN_SCORE = 2.2;
 
 /** The sections that best answer the latest question (and, more weakly, the one before it). */
 const IDENTITY = /^(who are you|what do you do|what is this|what are you|about (you|us)|tell me about (you|us|devbhoomi)|what is devbhoomi)/i;
+const WHERE = /^(where (are you|is your office|is the office|can i find you|do i find you)|how (do i|can i) (reach|find|get to) you)/i;
 export function retrieve(turns, k = 5) {
   const { chunks, df, N } = index();
   const users = turns.filter(t => t.role === 'user').map(t => t.content);
@@ -106,6 +107,7 @@ export function retrieve(turns, k = 5) {
   if (users.length > 1) add(users[users.length - 2], 0.4);
   if (users.length) add(users[users.length - 1], 1);
   if (users.length && IDENTITY.test(norm(users[users.length - 1]))) add('about services business land cottage', 1);
+  if (users.length && WHERE.test(norm(users[users.length - 1]))) add('office address contact kholachauri', 1);
   const scored = chunks.map(c => {
     let s = 0;
     for (const [t, w] of weight) if (c.set.has(t)) s += w * Math.log(1 + N / (1 + (df.get(t) || 0))) * (c.tset.has(t) ? 1.5 : 1);

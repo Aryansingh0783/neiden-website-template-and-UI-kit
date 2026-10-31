@@ -23,8 +23,8 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 | 1 | Foundation and Home | Devbhoomi brand, header, footer, real home page, all 20 real listings loaded | **Approved by owner** |
 | 2 | Listings | Property list with filters and sorting, full detail pages with photos, videos, highlights, WhatsApp per plot | **Approved by owner** |
 | 3 | The other pages | Areas (with their own pages), Cottages, Services, About, Guide, Testimonials (6 real), Updates, Referral, legal pages | **Approved by owner** |
-| 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | **Built, waiting for approval** |
-| 5 | Design pass | `impeccable` critique and polish across every page, `unslop` over all wording, image and video optimisation, accessibility and performance audit | Not started |
+| 4 | Forms and contact | Enquiry, valuation and referral forms, WhatsApp flow, map, mobile contact bar | **Approved by owner** |
+| 5 | Design pass | `impeccable` critique and polish across every page, `unslop` over all wording, image and video optimisation, accessibility and performance audit | **Built, waiting for approval** |
 | 6 | Assistant rebuild | New assistant on a free AI API behind a Vercel function (the key never reaches the browser), answers grounded in the listing data, refuses invented prices and advice | Not started |
 | 7 | Search readiness | Foundation built in phase 2 (see "SEO build"). Phase 7 is the final SEO audit: content depth per page, internal linking, image weight, Core Web Vitals, redirect map from every old URL | Foundation done, audit later |
 | 8 | Full audit and client demo | Automated crawl, accessibility, speed, link checks, a checklist for the client review | Not started |
@@ -68,6 +68,18 @@ The goal: turn this template into the Devbhoomi Realtors website, as a **standal
 - `api/enquiries.js` is a Vercel function ported from the live Worker (same fields, length limits, honeypot, 5 per 10 minutes rate limit, email after the save). **It does nothing until `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set on the Vercel project, and the staging project must not get the live keys** (answers 503 and the form carries on with WhatsApp). Use a separate test database if the owner wants to try storage before launch. Go-live step: set the live variables on the production project (`RESEND_API_KEY`, `RESEND_FROM`, `OFFICE_EMAIL` as well, and run `supabase/enquiries.sql` from the live repo).
 - Mobile bottom bar (WhatsApp and Call) on every page, and a lazy-loaded Google map on the contact page (the live site's embed).
 - Tests: 43 pass, including `tools/forms.test.mjs` (form fields, phone check, message text, and the API with a fake database).
+
+## Phase 5 record
+
+Audit tools: the `impeccable` detector (rendered pages at 1440 and 390 wide), `axe-core` (WCAG 2.0 to 2.2 AA and best practice), and a Playwright run for layout shift, load time, overflow and console errors.
+
+- **Before:** about 150 detector findings on the pages sampled (text contrast on the grey labels and the red accent, 11px text, orphaned last words, 85+ character lines, an all-caps footer line, 130px headings, a skipped heading level, a 1.9:1 light-on-light process list on Services). axe reported heading order and landmark problems.
+- **After:** axe reports 0 violations on 19 pages at both widths. The detector's remaining notes are the measure on a couple of lead paragraphs and two readings caused by the bottom edge-blur effect passing over small red numerals (the numerals themselves are 5.3:1).
+- **Fixes:** text red darkened to `#c4291d` (the bright `#ec4134` stays for fills, borders and the hero script); grey labels `#5f5f5b`; every text size is now 12px or more; `text-wrap: pretty` and `balance`; reading measure about 56ch; page headings capped at 96px (72px for long titles); long kickers in sentence case; footer line in sentence case; plot list gets an h2; heading levels never skip; callouts use `role="note"` and the price card is no longer a second landmark.
+- **Wording (unslop):** removed the template slogans ("Same land. Different units.", "A little clarity", "A different direction."), straight quotes everywhere, no em dashes anywhere (tested). The live site's own copy was left as written.
+- **Performance:** on a local build every page measured LCP under 250 ms and layout shift under 0.03, no horizontal overflow, no console errors, no failed requests. Real network numbers need the Vercel preview. The build no longer ships the template demo page, the unused 14 MB sample video or the internal provenance notes (`NOT_SHIPPED` in `tools/build.mjs`). Photographs are re-encoded by the importer when that saves 15 percent or more (`tools/optimize-image.mjs`).
+- **Left alone on purpose (owner decision):** the bracketed kickers with section numbers on the home page ("[ 01 DEVBHOOMI REALTORS ]") come from the Neiden design and the owner approved them. The impeccable guidance treats numbered kickers as a pattern to remove; say the word and they go. The home stats row also follows that "big number, small label" pattern but the owner asked for its count-up.
+- Tests: 44 pass (`npm test`).
 
 ## SEO build (owner's rule: build every page with search in mind)
 

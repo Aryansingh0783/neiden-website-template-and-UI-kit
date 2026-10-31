@@ -90,7 +90,9 @@ function document_(route, result, { notFound = false } = {}) {
 }
 
 fs.rmSync(dist, { recursive: true, force: true });
-fs.cpSync(siteDir, dist, { recursive: true });
+// Not shipped: the template's demo page, its unused 14 MB sample video and the internal provenance notes.
+const NOT_SHIPPED = new Set(['effects/demo.html', 'real-estate/assets/wave.mp4', 'real-estate/assets/provenance.json', 'real-estate/assets/reference-media-provenance.json']);
+fs.cpSync(siteDir, dist, { recursive: true, filter: src => !NOT_SHIPPED.has(path.relative(siteDir, src).replace(/\\/g, '/')) });
 const writeRoute = (route, file, html) => { const out = path.join(dist, file); fs.mkdirSync(path.dirname(out), { recursive: true }); fs.writeFileSync(out, html); };
 let count = 0;
 for (const route of routes) {

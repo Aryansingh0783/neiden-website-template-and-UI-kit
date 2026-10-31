@@ -1,4 +1,5 @@
 import test from 'node:test';
+import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {content,properties} from '../site/real-estate/content.mjs';
 import {renderPage,routeList,shell} from '../site/real-estate/components.mjs';
@@ -57,4 +58,14 @@ test('home: hero button says Get in touch, featured plots are the owner-chosen o
  assert.ok(!h.includes('/properties/near-devprayag-railway-station/'));
  assert.equal((h.match(/data-count="(25|10)" data-suffix="\+"/g)||[]).length,2);
  assert.ok(h.includes('<span class="estate-sr">25+</span>')&&h.includes('<span class="estate-sr">10+</span>'));
+});
+test('polish rules hold: no text under 12px, no template slogans, heading levels never skip, straight quotes only',()=>{
+ const css=fs.readFileSync(new URL('../site/real-estate/theme.css',import.meta.url),'utf8');
+ assert.ok(!/font-size:\s*(?:[0-9]|1[01])(?:\.\d+)?px/.test(css.replace(/\/\*[\s\S]*?\*\//g,'')),'a font-size under 12px is back in theme.css');
+ for(const r of routeList(content,properties)){
+  const h=render(r).html;
+  assert.ok(!/Same land|Different units|A different direction|A little clarity/.test(h),`${r}: template slogan`);
+  assert.ok(!/[‘’“”—]/.test(h.replace(/<(script|style)[\s\S]*?<\/\1>/g,'')),`${r}: curly quote or em dash`);
+  let last=0;for(const m of h.matchAll(/<h([1-6])[ >]/g)){const l=Number(m[1]);assert.ok(l<=last+1||last===0,`${r}: heading jumps h${last} to h${l}`);last=l;}
+ }
 });
